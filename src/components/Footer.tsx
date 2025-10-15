@@ -59,7 +59,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="/products/indianet"
+                    href="/pages/products/indianet"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Indianet Platform
@@ -67,7 +67,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="/products/SuperMemory"
+                    href="/products/supermemory"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     MemoryX AI
