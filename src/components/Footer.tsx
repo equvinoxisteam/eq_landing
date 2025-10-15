@@ -51,7 +51,7 @@ export default function Footer() {
               <ul className="space-y-2 text-sm">
                 <li>
                   <a
-                    href="products/enigma"
+                    href="/products/enigma"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Enigma AI
@@ -59,7 +59,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="products/indianet"
+                    href="/products/indianet"
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     Indianet Platform
