@@ -36,7 +36,7 @@ export default function Hero() {
           </p>
 
           <p className="text-lg md:text-xl text-gray-400 mb-12 animate-fade-in-up delay-300 max-w-3xl mx-auto">
-            From CNC partner matching and connected supply chains to text-to-manufacture-ready CAD, Equvinoxis
+            From sourcing partner matching and connected supply chains to text-to-manufacture-ready CAD, Equvinoxis
             helps manufacturers move faster. We also build custom software for industry-specific challenges.
           </p>
 

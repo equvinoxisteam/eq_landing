@@ -89,15 +89,6 @@ export default function Navigation() {
             </Link>
 
             <Link
-              to="/case-studies"
-              className={`text-sm font-medium transition-colors ${
-                isActive('/case-studies') ? 'text-blue-400' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Case Studies
-            </Link>
-
-            <Link
               to="/about"
               className={`text-sm font-medium transition-colors ${
                 isActive('/about') ? 'text-blue-400' : 'text-gray-300 hover:text-white'
@@ -184,16 +175,6 @@ export default function Navigation() {
                 }`}
               >
                 Research
-              </Link>
-
-              <Link
-                to="/case-studies"
-                onClick={() => setIsOpen(false)}
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/case-studies') ? 'text-blue-400' : 'text-gray-300'
-                }`}
-              >
-                Case Studies
               </Link>
 
               <Link
