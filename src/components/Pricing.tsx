@@ -19,7 +19,7 @@ const plans = [
     subtitle: 'For Medium Manufacturers',
     features: [
       'Full IndiaNet access',
-      'SuperMemory AI',
+      'SolidXCad text-to-CAD',
       'Custom integrations',
       'Priority support',
       'Up to 50 suppliers',

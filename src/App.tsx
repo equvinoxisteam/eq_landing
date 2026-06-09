@@ -10,7 +10,7 @@ import CaseStudiesPage from './pages/CaseStudiesPage';
 import ResearchPage from './pages/ResearchPage';
 import ProductEnigma from './pages/ProductEnigma';
 import ProductIndianet from './pages/ProductIndianet';
-import ProductSuperMemory from './pages/ProductSuperMemory';
+import ProductSolidXCad from './pages/ProductSolidXCad';
 import Security from './components/Security';
 import FAQ from './components/FAQ';
 
@@ -29,7 +29,7 @@ function App() {
           <Route path="/case-studies" element={<CaseStudiesPage />} />
           <Route path="/products/enigma" element={<ProductEnigma />} />
           <Route path="/products/indianet" element={<ProductIndianet />} />
-          <Route path="/products/supermemory" element={<ProductSuperMemory />} />
+          <Route path="/products/solidxcad" element={<ProductSolidXCad />} />
         </Routes>
         <Security />
         <FAQ />

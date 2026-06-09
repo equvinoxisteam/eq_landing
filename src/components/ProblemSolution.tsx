@@ -1,4 +1,29 @@
-import { AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Brain, Network, Box, Code2 } from 'lucide-react';
+import { PRODUCT_URLS } from '../constants/site';
+
+const products = [
+  {
+    icon: Brain,
+    name: 'Enigma AI',
+    summary: 'Find the right CNC manufacturing partners in seconds — with zero commission and precise capability matching.',
+    href: PRODUCT_URLS.enigma,
+    color: 'text-blue-400',
+  },
+  {
+    icon: Network,
+    name: 'Indianet',
+    summary: 'Connect raw materials, machinery, logistics, and compliance in one supply chain platform built for manufacturers.',
+    href: PRODUCT_URLS.indianet,
+    color: 'text-purple-400',
+  },
+  {
+    icon: Box,
+    name: 'SolidXCad',
+    summary: 'Turn design descriptions into manufacture-ready CAD models — production-grade output for CNC and tooling workflows.',
+    href: PRODUCT_URLS.solidxcad,
+    color: 'text-amber-400',
+  },
+];
 
 export default function ProblemSolution() {
   return (
@@ -14,23 +39,23 @@ export default function ProblemSolution() {
               <div className="space-y-4 text-gray-300">
                 <p className="flex items-start gap-3">
                   <span className="text-red-500 text-xl">•</span>
-                  <span>Off-the-shelf software rarely fits unique manufacturing needs</span>
+                  <span>Finding reliable CNC partners and suppliers takes weeks of manual outreach</span>
                 </p>
                 <p className="flex items-start gap-3">
                   <span className="text-red-500 text-xl">•</span>
-                  <span>Data exists but insights are buried without proper analysis</span>
+                  <span>Supply chains stay fragmented across materials, logistics, and compliance</span>
                 </p>
                 <p className="flex items-start gap-3">
                   <span className="text-red-500 text-xl">•</span>
-                  <span>Manual processes waste time and create bottlenecks</span>
+                  <span>Design-to-production cycles are slow when CAD work becomes a bottleneck</span>
                 </p>
                 <p className="flex items-start gap-3">
                   <span className="text-red-500 text-xl">•</span>
-                  <span>Legacy systems don't integrate with modern tools</span>
+                  <span>Generic software does not address industry-specific manufacturing workflows</span>
                 </p>
                 <p className="flex items-start gap-3">
                   <span className="text-red-500 text-xl">•</span>
-                  <span>Lack of AI expertise to leverage emerging technology</span>
+                  <span>Legacy systems and shop-floor tools operate in silos</span>
                 </p>
               </div>
             </div>
@@ -40,26 +65,45 @@ export default function ProblemSolution() {
                 <CheckCircle2 className="w-8 h-8 text-green-500" />
                 <h2 className="text-3xl font-bold">What We Do</h2>
               </div>
-              <p className="text-xl text-gray-300 mb-6">
-                Equvinoxis builds custom AI software and offers powerful products that solve real manufacturing challenges.
+              <p className="text-xl text-gray-300 mb-6 leading-relaxed">
+                Equvinoxis builds software for modern manufacturing — with ready-to-use products for sourcing,
+                supply chain, and CAD, plus custom solutions shaped around your industry and operational challenges.
               </p>
-              <div className="space-y-4 text-gray-300">
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 text-xl">✓</span>
-                  <span><strong className="text-white">Custom Development:</strong> Bespoke AI solutions built for your needs</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 text-xl">✓</span>
-                  <span><strong className="text-white">Ready Products:</strong> Proven solutions you can use immediately</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 text-xl">✓</span>
-                  <span><strong className="text-white">Data Research:</strong> Turn your data into actionable insights</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <span className="text-green-500 text-xl">✓</span>
-                  <span><strong className="text-white">Integration:</strong> Connect everything seamlessly</span>
-                </p>
+
+              <div className="space-y-5 mb-6">
+                {products.map((product) => {
+                  const Icon = product.icon;
+                  return (
+                    <a
+                      key={product.name}
+                      href={product.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group"
+                    >
+                      <div className="flex items-start gap-3">
+                        <Icon className={`w-5 h-5 mt-1 flex-shrink-0 ${product.color}`} />
+                        <div>
+                          <strong className="text-white group-hover:text-blue-300 transition-colors">
+                            {product.name}:
+                          </strong>{' '}
+                          <span className="text-gray-300">{product.summary}</span>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+
+              <div className="border-t border-green-900/40 pt-5">
+                <div className="flex items-start gap-3">
+                  <Code2 className="w-5 h-5 mt-1 flex-shrink-0 text-orange-400" />
+                  <p className="text-gray-300">
+                    <strong className="text-white">Custom Industry Solutions:</strong> We also design and build
+                    tailored software for specific sectors — automotive, aerospace, precision machining, electronics,
+                    and more — addressing the exact workflows, integrations, and production challenges your team faces.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

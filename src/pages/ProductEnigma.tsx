@@ -1,4 +1,5 @@
-import { Brain, Zap, Target, CheckCircle2 } from 'lucide-react';
+import { Brain, Zap, Target, CheckCircle2, ArrowRight } from 'lucide-react';
+import { PRODUCT_URLS } from '../constants/site';
 
 export default function ProductEnigma() {
   return (
@@ -16,10 +17,15 @@ export default function ProductEnigma() {
             <p className="text-xl text-gray-400 mb-8">
               AI-powered CNC partner matching in 60 seconds. Zero commission. 99.9% accuracy.
             </p>
-            <div className="inline-flex items-center gap-3 bg-gray-800 border border-gray-700 rounded-lg px-8 py-4">
-              <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
-              <span className="text-lg font-semibold text-gray-300">Coming Soon</span>
-            </div>
+            <a
+              href={PRODUCT_URLS.enigma}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30"
+            >
+              Launch Enigma AI
+              <ArrowRight className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </section>
@@ -53,34 +59,22 @@ export default function ProductEnigma() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold mb-12 text-center">How Enigma Works</h2>
             <div className="space-y-8">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full flex items-center justify-center font-bold">1</div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Upload Your Requirements</h3>
-                  <p className="text-gray-400">Share your technical drawings, specifications, and requirements</p>
+              {[
+                { step: '1', title: 'Upload Your Requirements', text: 'Share your technical drawings, specifications, and requirements' },
+                { step: '2', title: 'AI Analyzes & Matches', text: 'Our AI engine evaluates thousands of manufacturers in seconds' },
+                { step: '3', title: 'Get Perfect Matches', text: 'Receive ranked recommendations with pricing and lead times' },
+                { step: '4', title: 'Connect & Order', text: 'Connect directly with manufacturers and place orders' },
+              ].map((item) => (
+                <div key={item.step} className="flex gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full flex items-center justify-center font-bold">
+                    {item.step}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-gray-400">{item.text}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full flex items-center justify-center font-bold">2</div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">AI Analyzes & Matches</h3>
-                  <p className="text-gray-400">Our AI engine evaluates thousands of manufacturers in seconds</p>
-                </div>
-              </div>
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full flex items-center justify-center font-bold">3</div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Get Perfect Matches</h3>
-                  <p className="text-gray-400">Receive ranked recommendations with pricing and lead times</p>
-                </div>
-              </div>
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full flex items-center justify-center font-bold">4</div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Connect & Order</h3>
-                  <p className="text-gray-400">Connect directly with manufacturers and place orders</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

@@ -61,11 +61,11 @@ export default function Navigation() {
                   <div className="text-xs text-gray-500">Manufacturing Ecosystem</div>
                 </Link>
                 <Link
-                  to="/products/supermemory"
+                  to="/products/solidxcad"
                   className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
                 >
-                  <div className="font-semibold">MemoryX AI</div>
-                  <div className="text-xs text-gray-500">Intelligence Engine</div>
+                  <div className="font-semibold">SolidXCad</div>
+                  <div className="text-xs text-gray-500">Text-to-CAD Platform</div>
                 </Link>
               </div>
             </div>
@@ -157,11 +157,11 @@ export default function Navigation() {
                     Indianet
                   </Link>
                   <Link
-                    to="/products/supermemory"
+                    to="/products/solidxcad"
                     onClick={() => setIsOpen(false)}
                     className="text-sm text-gray-300"
                   >
-                    SuperMemory AI
+                    SolidXCad
                   </Link>
                 </div>
               </div>

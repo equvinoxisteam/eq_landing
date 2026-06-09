@@ -1,4 +1,5 @@
-import { Network, Package, TrendingUp, Shield } from 'lucide-react';
+import { Network, Package, TrendingUp, Shield, ArrowRight } from 'lucide-react';
+import { PRODUCT_URLS } from '../constants/site';
 
 export default function ProductIndianet() {
   return (
@@ -16,10 +17,15 @@ export default function ProductIndianet() {
             <p className="text-xl text-gray-400 mb-8">
               End-to-end supply chain platform spanning raw materials, machines, logistics, and compliance.
             </p>
-            <div className="inline-flex items-center gap-3 bg-gray-800 border border-gray-700 rounded-lg px-8 py-4">
-              <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
-              <span className="text-lg font-semibold text-gray-300">Coming Soon</span>
-            </div>
+            <a
+              href={PRODUCT_URLS.indianet}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/30"
+            >
+              Launch Indianet
+              <ArrowRight className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </section>
@@ -58,81 +64,56 @@ export default function ProductIndianet() {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl font-bold mb-12 text-center">Complete Manufacturing Ecosystem</h2>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-800/50 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold mb-4">Raw Materials</h3>
-                <p className="text-gray-300 mb-4">Access to verified raw material suppliers with quality guarantees</p>
-                <ul className="space-y-2 text-gray-400">
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                    Real-time pricing
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                    Quality certifications
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                    Inventory management
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border border-blue-800/50 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold mb-4">Machinery & Equipment</h3>
-                <p className="text-gray-300 mb-4">Connect with machine suppliers and maintenance services</p>
-                <ul className="space-y-2 text-gray-400">
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                    Equipment marketplace
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                    Maintenance scheduling
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                    Spare parts sourcing
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-900/30 to-teal-900/30 border border-green-800/50 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold mb-4">Logistics & Tracking</h3>
-                <p className="text-gray-300 mb-4">End-to-end logistics management and real-time tracking</p>
-                <ul className="space-y-2 text-gray-400">
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    Multi-modal logistics
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    Live shipment tracking
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    Automated documentation
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-gradient-to-br from-orange-900/30 to-red-900/30 border border-orange-800/50 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold mb-4">Compliance & Standards</h3>
-                <p className="text-gray-300 mb-4">Automated compliance management and certification tracking</p>
-                <ul className="space-y-2 text-gray-400">
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-                    ISO tracking
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-                    Audit management
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-                    Documentation automation
-                  </li>
-                </ul>
-              </div>
+              {[
+                {
+                  title: 'Raw Materials',
+                  desc: 'Access to verified raw material suppliers with quality guarantees',
+                  color: 'from-purple-900/30 to-pink-900/30',
+                  border: 'border-purple-800/50',
+                  dot: 'bg-purple-400',
+                  items: ['Real-time pricing', 'Quality certifications', 'Inventory management'],
+                },
+                {
+                  title: 'Machinery & Equipment',
+                  desc: 'Connect with machine suppliers and maintenance services',
+                  color: 'from-blue-900/30 to-cyan-900/30',
+                  border: 'border-blue-800/50',
+                  dot: 'bg-blue-400',
+                  items: ['Equipment marketplace', 'Maintenance scheduling', 'Spare parts sourcing'],
+                },
+                {
+                  title: 'Logistics & Tracking',
+                  desc: 'End-to-end logistics management and real-time tracking',
+                  color: 'from-green-900/30 to-teal-900/30',
+                  border: 'border-green-800/50',
+                  dot: 'bg-green-400',
+                  items: ['Multi-modal logistics', 'Live shipment tracking', 'Automated documentation'],
+                },
+                {
+                  title: 'Compliance & Standards',
+                  desc: 'Automated compliance management and certification tracking',
+                  color: 'from-orange-900/30 to-red-900/30',
+                  border: 'border-orange-800/50',
+                  dot: 'bg-orange-400',
+                  items: ['ISO tracking', 'Audit management', 'Documentation automation'],
+                },
+              ].map((block) => (
+                <div
+                  key={block.title}
+                  className={`bg-gradient-to-br ${block.color} border ${block.border} rounded-2xl p-8`}
+                >
+                  <h3 className="text-2xl font-bold mb-4">{block.title}</h3>
+                  <p className="text-gray-300 mb-4">{block.desc}</p>
+                  <ul className="space-y-2 text-gray-400">
+                    {block.items.map((item) => (
+                      <li key={item} className="flex items-center gap-2">
+                        <div className={`w-1.5 h-1.5 rounded-full ${block.dot}`} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
         </div>

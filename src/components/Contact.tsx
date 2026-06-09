@@ -17,15 +17,28 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      // Skipping actual submission, just simulate success
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // simulate delay
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
       setSubmitted(true);
       setFormData({ name: '', email: '', company: '', phone: '', message: '' });
-      
       setTimeout(() => setSubmitted(false), 5000);
     } catch (error) {
       console.error('Form submission error:', error);
-      alert('There was an error submitting the form. Please try again or call us directly.');
+      alert(
+        error instanceof Error
+          ? error.message
+          : 'There was an error submitting the form. Please try again or call us directly.'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -161,10 +174,10 @@ export default function Contact() {
                   Prefer email? Write to us directly
                 </p>
                 <a
-                  href="mailto:contact@equvinoxis.com"
+                  href="mailto:info@equvinoxis.com"
                   className="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-2"
                 >
-                  team@equvinoxis.com
+                  info@equvinoxis.com
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
