@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { getMailConfigStatus, sendContactEmail } from './mail.js';
+import { getMailConfigStatus, probeMailProviders, sendContactEmail } from './mail.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
@@ -19,6 +19,19 @@ app.use(express.json({ limit: '32kb' }));
 app.get('/api/health', (_req, res) => {
   const mail = getMailConfigStatus();
   res.json({ ok: mail.ok, ...mail });
+});
+
+app.get('/api/health/mail-probe', async (_req, res) => {
+  try {
+    const probe = await probeMailProviders();
+    const mail = getMailConfigStatus();
+    res.json({ ok: true, ...mail, probe });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      error: error instanceof Error ? error.message : 'Mail probe failed',
+    });
+  }
 });
 
 app.post('/api/contact', async (req, res) => {
@@ -44,10 +57,7 @@ app.post('/api/contact', async (req, res) => {
     res.json({ ok: true, provider: result.provider });
   } catch (error) {
     console.error('Contact API error:', error);
-    const message =
-      process.env.NODE_ENV === 'development' && error instanceof Error
-        ? error.message
-        : 'Failed to send message. Please try again later.';
+    const message = error instanceof Error ? error.message : 'Failed to send message. Please try again later.';
     res.status(500).json({ error: message });
   }
 });

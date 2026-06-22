@@ -62,6 +62,23 @@ function getMailFrom() {
   return env('MAIL_FROM') || `Equvinoxis <${getMailUser() || DEFAULT_MAIL_TO}>`;
 }
 
+function getGmailFromHeader() {
+  const user = getMailUser();
+  if (!user) return getMailFrom();
+
+  const mailFrom = getMailFrom();
+  const match = mailFrom.match(/^(.+?)\s*<([^>]+)>$/);
+  if (match && match[2].trim().toLowerCase() === user.toLowerCase()) {
+    return mailFrom;
+  }
+
+  if (mailFrom.toLowerCase() === user.toLowerCase()) {
+    return mailFrom;
+  }
+
+  return user;
+}
+
 function getMailTo() {
   return env('MAIL_TO') || getMailUser() || DEFAULT_MAIL_TO;
 }
@@ -78,8 +95,12 @@ function hasGmailOAuthConfig() {
   return Boolean(hasGmailApiCredentials() && (getRefreshToken() || env('GMAIL_AUTH_CODE')));
 }
 
+function getWeb3FormsKey() {
+  return env('WEB3FORMS_ACCESS_KEY') || env('WEB3FORMS_KEY') || env('WEB3FORMS_API_KEY');
+}
+
 function hasWeb3FormsConfig() {
-  return Boolean(env('WEB3FORMS_ACCESS_KEY'));
+  return Boolean(getWeb3FormsKey());
 }
 
 function getProviderChain() {
@@ -113,8 +134,8 @@ function getProviderChain() {
     return chain.length ? chain : ['formsubmit'];
   }
   if (configured === 'gmail-oauth' || configured === 'gmail-api' || configured === 'gmail') {
-    addOAuth();
     addWeb3Forms();
+    addOAuth();
     addSmtp();
     addFormSubmit();
     return chain.length ? chain : ['formsubmit'];
@@ -308,7 +329,8 @@ async function sendViaSmtp(payload) {
 async function sendViaGmailOAuth(payload) {
   const { name, email, company, phone, message } = payload;
   const accessToken = await getGmailAccessToken();
-  const mailFrom = getMailFrom();
+  const mailUser = getMailUser();
+  const mailFrom = getGmailFromHeader();
   const mailTo = getMailTo();
   const subject = `New contact form: ${name} (${company})`;
   const html = buildContactHtml({ name, email, company, phone, message });
@@ -321,7 +343,11 @@ async function sendViaGmailOAuth(payload) {
     html,
   });
 
-  const response = await fetch(GMAIL_SEND_URL, {
+  const sendUrl = mailUser
+    ? `https://gmail.googleapis.com/gmail/v1/users/${encodeURIComponent(mailUser)}/messages/send`
+    : GMAIL_SEND_URL;
+
+  const response = await fetch(sendUrl, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -348,7 +374,7 @@ async function sendViaWeb3Forms(payload) {
       Accept: 'application/json',
     },
     body: JSON.stringify({
-      access_key: requireEnv('WEB3FORMS_ACCESS_KEY'),
+      access_key: getWeb3FormsKey() || requireEnv('WEB3FORMS_ACCESS_KEY'),
       subject: `New contact form: ${name} (${company})`,
       from_name: name,
       email,
@@ -449,6 +475,64 @@ export function getActiveMailProvider() {
   return resolveMailProvider();
 }
 
+function toPublicMailError(error) {
+  if (!(error instanceof Error)) {
+    return 'Failed to send message. Please try again later.';
+  }
+
+  const msg = error.message;
+
+  if (/invalid_grant|token has been expired|revoked/i.test(msg)) {
+    return 'Gmail authorization expired. Regenerate GMAIL_REFRESH_TOKEN (npm run gmail:setup) and update Railway.';
+  }
+
+  if (/Gmail API has not been used|mail service|Precondition check|accessNotConfigured/i.test(msg)) {
+    return 'Gmail API is not enabled. Enable Gmail API in Google Cloud Console for this OAuth project.';
+  }
+
+  if (/insufficient.*scope|invalid_scope/i.test(msg)) {
+    return 'Gmail OAuth scope is wrong. Re-authorize with scope https://mail.google.com/';
+  }
+
+  if (/Web3Forms/i.test(msg)) {
+    return msg;
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    return msg;
+  }
+
+  return 'Failed to send message. Please try again later.';
+}
+
+export async function probeMailProviders() {
+  const results = {};
+
+  if (hasGmailOAuthConfig()) {
+    try {
+      await refreshGmailAccessToken(getRefreshToken());
+      results['gmail-oauth'] = { ok: true };
+    } catch (error) {
+      results['gmail-oauth'] = {
+        ok: false,
+        error: error instanceof Error ? error.message : String(error),
+      };
+    }
+  } else {
+    results['gmail-oauth'] = { ok: false, error: 'not configured' };
+  }
+
+  if (hasWeb3FormsConfig()) {
+    results.web3forms = { ok: true, note: 'access key present' };
+  } else {
+    results.web3forms = { ok: false, error: 'WEB3FORMS_ACCESS_KEY not set' };
+  }
+
+  results.formsubmit = { ok: true, note: 'used as last-resort fallback' };
+
+  return results;
+}
+
 export function getMailConfigStatus() {
   const chain = getProviderChain();
   const primary = chain[0] || 'none';
@@ -504,7 +588,8 @@ export async function sendContactEmail(payload) {
     );
   }
 
-  throw lastError || new Error('All email delivery methods failed');
+  const publicError = toPublicMailError(lastError);
+  throw new Error(publicError);
 }
 
 // Load refresh token from env on startup

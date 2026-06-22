@@ -13,6 +13,7 @@
     "build": "vite build",
     "start": "node server/index.js",
     "gmail:setup": "node scripts/gmail-oauth-setup.js",
+    "mail:probe": "node scripts/mail-probe.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
