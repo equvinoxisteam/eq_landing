@@ -1,9 +1,15 @@
+import nodemailer from 'nodemailer';
+
 const GMAIL_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GMAIL_SEND_URL = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send';
 const DEFAULT_MAIL_TO = 'info@equvinoxis.com';
 
+function env(name) {
+  return process.env[name]?.trim() || '';
+}
+
 function requireEnv(name) {
-  const value = process.env[name];
+  const value = env(name);
   if (!value) {
     throw new Error(`Missing required environment variable: ${name}`);
   }
@@ -18,24 +24,64 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
-function getMailTo() {
-  return process.env.MAIL_TO || DEFAULT_MAIL_TO;
+function getMailUser() {
+  return env('MAIL_USER') || env('GMAIL_USER');
 }
 
-function hasGmailConfig() {
+function getMailPass() {
+  return (env('MAIL_PASS') || env('GMAIL_APP_PASSWORD')).replace(/\s+/g, '');
+}
+
+function getGmailClientId() {
+  return env('GMAIL_CLIENT_ID') || env('GOOGLE_CLIENT_ID');
+}
+
+function getGmailClientSecret() {
+  return env('GMAIL_CLIENT_SECRET') || env('GOOGLE_CLIENT_SECRET');
+}
+
+function getMailFrom() {
+  return env('MAIL_FROM') || `Equvinoxis <${getMailUser() || DEFAULT_MAIL_TO}>`;
+}
+
+function getMailTo() {
+  return env('MAIL_TO') || getMailUser() || DEFAULT_MAIL_TO;
+}
+
+function hasSmtpConfig() {
+  return Boolean(getMailUser() && getMailPass());
+}
+
+function hasGmailOAuthConfig() {
   return Boolean(
-    process.env.GMAIL_CLIENT_ID &&
-      process.env.GMAIL_CLIENT_SECRET &&
-      process.env.GMAIL_REFRESH_TOKEN &&
-      (process.env.MAIL_FROM || process.env.GMAIL_USER)
+    getGmailClientId() &&
+      getGmailClientSecret() &&
+      env('GMAIL_REFRESH_TOKEN') &&
+      (getMailFrom() || getMailUser())
   );
 }
 
 function resolveMailProvider() {
-  const configured = (process.env.MAIL_PROVIDER || 'auto').toLowerCase();
+  const configured = (env('MAIL_PROVIDER') || 'auto').toLowerCase();
 
-  if (configured === 'gmail') {
-    return 'gmail';
+  if (configured === 'smtp' || configured === 'gmail') {
+    if (hasSmtpConfig()) {
+      return 'smtp';
+    }
+    if (configured === 'gmail' && hasGmailOAuthConfig()) {
+      return 'gmail-oauth';
+    }
+    if (configured === 'formsubmit') {
+      return 'formsubmit';
+    }
+    if (configured === 'log') {
+      return 'log';
+    }
+    return 'formsubmit';
+  }
+
+  if (configured === 'gmail-oauth') {
+    return 'gmail-oauth';
   }
 
   if (configured === 'formsubmit') {
@@ -46,11 +92,41 @@ function resolveMailProvider() {
     return 'log';
   }
 
-  if (hasGmailConfig()) {
-    return 'gmail';
+  if (hasSmtpConfig()) {
+    return 'smtp';
+  }
+
+  if (hasGmailOAuthConfig()) {
+    return 'gmail-oauth';
   }
 
   return 'formsubmit';
+}
+
+function buildContactHtml({ name, email, company, phone, message }) {
+  return `
+    <h2>New Equvinoxis contact form submission</h2>
+    <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+    <p><strong>Company:</strong> ${escapeHtml(company)}</p>
+    <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
+    <p><strong>Message:</strong></p>
+    <p>${escapeHtml(message || '(none)').replace(/\n/g, '<br>')}</p>
+  `.trim();
+}
+
+function buildContactText({ name, email, company, phone, message }) {
+  return [
+    'New Equvinoxis contact form submission',
+    '',
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Company: ${company}`,
+    `Phone: ${phone}`,
+    '',
+    'Message:',
+    message || '(none)',
+  ].join('\n');
 }
 
 async function getGmailAccessToken() {
@@ -58,8 +134,8 @@ async function getGmailAccessToken() {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      client_id: requireEnv('GMAIL_CLIENT_ID'),
-      client_secret: requireEnv('GMAIL_CLIENT_SECRET'),
+      client_id: getGmailClientId(),
+      client_secret: getGmailClientSecret(),
       refresh_token: requireEnv('GMAIL_REFRESH_TOKEN'),
       grant_type: 'refresh_token',
     }),
@@ -92,22 +168,40 @@ function buildRawEmail({ from, to, replyTo, subject, html }) {
     .replace(/=+$/, '');
 }
 
-function buildContactHtml({ name, email, company, phone, message }) {
-  return `
-    <h2>New Equvinoxis contact form submission</h2>
-    <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-    <p><strong>Company:</strong> ${escapeHtml(company)}</p>
-    <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
-    <p><strong>Message:</strong></p>
-    <p>${escapeHtml(message || '(none)').replace(/\n/g, '<br>')}</p>
-  `.trim();
+async function sendViaSmtp(payload) {
+  const { name, email, company, phone, message } = payload;
+  const mailUser = getMailUser();
+  const mailPass = getMailPass();
+  const mailFrom = getMailFrom();
+  const mailTo = getMailTo();
+  const subject = `New contact form: ${name} (${company})`;
+
+  const transporter = nodemailer.createTransport({
+    host: env('SMTP_HOST') || 'smtp.gmail.com',
+    port: Number(env('SMTP_PORT') || 587),
+    secure: env('SMTP_SECURE') === 'true',
+    auth: {
+      user: mailUser,
+      pass: mailPass,
+    },
+  });
+
+  const info = await transporter.sendMail({
+    from: mailFrom,
+    to: mailTo,
+    replyTo: email,
+    subject,
+    text: buildContactText({ name, email, company, phone, message }),
+    html: buildContactHtml({ name, email, company, phone, message }),
+  });
+
+  return { provider: 'smtp', data: { messageId: info.messageId } };
 }
 
-async function sendViaGmail(payload) {
+async function sendViaGmailOAuth(payload) {
   const { name, email, company, phone, message } = payload;
   const accessToken = await getGmailAccessToken();
-  const mailFrom = process.env.MAIL_FROM || requireEnv('GMAIL_USER');
+  const mailFrom = getMailFrom();
   const mailTo = getMailTo();
   const subject = `New contact form: ${name} (${company})`;
   const html = buildContactHtml({ name, email, company, phone, message });
@@ -134,7 +228,7 @@ async function sendViaGmail(payload) {
     throw new Error(data.error?.message || 'Failed to send email via Gmail API');
   }
 
-  return { provider: 'gmail', data };
+  return { provider: 'gmail-oauth', data };
 }
 
 async function sendViaFormSubmit(payload) {
@@ -181,8 +275,12 @@ export async function sendContactEmail(payload) {
   const provider = resolveMailProvider();
 
   try {
-    if (provider === 'gmail') {
-      return await sendViaGmail(payload);
+    if (provider === 'smtp') {
+      return await sendViaSmtp(payload);
+    }
+
+    if (provider === 'gmail-oauth') {
+      return await sendViaGmailOAuth(payload);
     }
 
     if (provider === 'formsubmit') {
@@ -195,8 +293,8 @@ export async function sendContactEmail(payload) {
 
     throw new Error(`Unsupported mail provider: ${provider}`);
   } catch (error) {
-    if (provider === 'gmail' && process.env.MAIL_PROVIDER !== 'gmail') {
-      console.warn('Gmail send failed, falling back to FormSubmit:', error.message);
+    if (provider === 'smtp' || provider === 'gmail-oauth') {
+      console.warn(`${provider} send failed, falling back to FormSubmit:`, error.message);
       return sendViaFormSubmit(payload);
     }
 

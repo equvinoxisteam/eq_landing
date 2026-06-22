@@ -22,10 +22,23 @@ npm run dev
 
 ## Environment variables
 
-Copy `.env.example` to `.env` and fill in Gmail OAuth credentials for the contact form.
+Copy `.env.example` to `.env` and configure Gmail SMTP for the contact form:
+
+```bash
+MAIL_PROVIDER=gmail
+MAIL_USER=info@equvinoxis.com
+MAIL_PASS=your-gmail-app-password
+MAIL_FROM=Equvinoxis <info@equvinoxis.com>
+MAIL_TO=info@equvinoxis.com
+```
+
+Use a [Gmail App Password](https://support.google.com/accounts/answer/185833) (not your regular Gmail password). Set the same variables in Railway for production.
 
 ## Deploy (Railway)
 
-Set the same env vars in Railway, then deploy. Build runs `npm run build`; start runs `node server/index.js`.
+1. Connect the GitHub repo `equvinoxisteam/eq_landing`
+2. Add the mail env vars above in **Variables**
+3. Deploy — build runs `npm run build`; start runs `node server/index.js`
+4. Generate a public domain under **Networking**
 
 Contact: info@equvinoxis.com
