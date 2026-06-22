@@ -3,9 +3,11 @@ import nodemailer from 'nodemailer';
 const GMAIL_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GMAIL_SEND_URL = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send';
 const DEFAULT_MAIL_TO = 'info@equvinoxis.com';
+const SEND_TIMEOUT_MS = 20000;
 
 function env(name) {
-  return process.env[name]?.trim() || '';
+  const raw = process.env[name]?.trim() || '';
+  return raw.replace(/^["']|["']$/g, '');
 }
 
 function requireEnv(name) {
@@ -129,6 +131,32 @@ function buildContactText({ name, email, company, phone, message }) {
   ].join('\n');
 }
 
+function withTimeout(promise, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(`${label} timed out after ${SEND_TIMEOUT_MS / 1000}s`));
+      }, SEND_TIMEOUT_MS);
+    }),
+  ]);
+}
+
+function createSmtpTransporter({ port, secure }) {
+  return nodemailer.createTransport({
+    host: env('SMTP_HOST') || 'smtp.gmail.com',
+    port,
+    secure,
+    auth: {
+      user: getMailUser(),
+      pass: getMailPass(),
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
+  });
+}
+
 async function getGmailAccessToken() {
   const response = await fetch(GMAIL_TOKEN_URL, {
     method: 'POST',
@@ -168,34 +196,48 @@ function buildRawEmail({ from, to, replyTo, subject, html }) {
     .replace(/=+$/, '');
 }
 
+async function sendMailWithTransporter(transporter, mailOptions) {
+  await transporter.verify();
+  const info = await transporter.sendMail(mailOptions);
+  return info;
+}
+
 async function sendViaSmtp(payload) {
   const { name, email, company, phone, message } = payload;
-  const mailUser = getMailUser();
-  const mailPass = getMailPass();
   const mailFrom = getMailFrom();
   const mailTo = getMailTo();
   const subject = `New contact form: ${name} (${company})`;
-
-  const transporter = nodemailer.createTransport({
-    host: env('SMTP_HOST') || 'smtp.gmail.com',
-    port: Number(env('SMTP_PORT') || 587),
-    secure: env('SMTP_SECURE') === 'true',
-    auth: {
-      user: mailUser,
-      pass: mailPass,
-    },
-  });
-
-  const info = await transporter.sendMail({
+  const mailOptions = {
     from: mailFrom,
     to: mailTo,
     replyTo: email,
     subject,
     text: buildContactText({ name, email, company, phone, message }),
     html: buildContactHtml({ name, email, company, phone, message }),
-  });
+  };
 
-  return { provider: 'smtp', data: { messageId: info.messageId } };
+  const customPort = env('SMTP_PORT');
+  const attempts = customPort
+    ? [{ port: Number(customPort), secure: env('SMTP_SECURE') === 'true' }]
+    : [
+        { port: 587, secure: false },
+        { port: 465, secure: true },
+      ];
+
+  let lastError;
+
+  for (const attempt of attempts) {
+    try {
+      const transporter = createSmtpTransporter(attempt);
+      const info = await sendMailWithTransporter(transporter, mailOptions);
+      return { provider: 'smtp', data: { messageId: info.messageId, port: attempt.port } };
+    } catch (error) {
+      lastError = error;
+      console.warn(`SMTP send failed on port ${attempt.port}:`, error.message);
+    }
+  }
+
+  throw lastError || new Error('SMTP send failed');
 }
 
 async function sendViaGmailOAuth(payload) {
@@ -271,31 +313,50 @@ export function getActiveMailProvider() {
   return resolveMailProvider();
 }
 
+export function getMailConfigStatus() {
+  return {
+    provider: resolveMailProvider(),
+    mailUser: getMailUser() ? `${getMailUser().slice(0, 3)}***` : 'missing',
+    mailTo: getMailTo(),
+    hasPassword: Boolean(getMailPass()),
+  };
+}
+
+async function dispatchEmail(provider, payload) {
+  if (provider === 'smtp') {
+    return sendViaSmtp(payload);
+  }
+
+  if (provider === 'gmail-oauth') {
+    return sendViaGmailOAuth(payload);
+  }
+
+  if (provider === 'formsubmit') {
+    return sendViaFormSubmit(payload);
+  }
+
+  if (provider === 'log') {
+    return sendViaLog(payload);
+  }
+
+  throw new Error(`Unsupported mail provider: ${provider}`);
+}
+
 export async function sendContactEmail(payload) {
   const provider = resolveMailProvider();
+  const configured = (env('MAIL_PROVIDER') || 'auto').toLowerCase();
 
   try {
-    if (provider === 'smtp') {
-      return await sendViaSmtp(payload);
-    }
-
-    if (provider === 'gmail-oauth') {
-      return await sendViaGmailOAuth(payload);
-    }
-
-    if (provider === 'formsubmit') {
-      return await sendViaFormSubmit(payload);
-    }
-
-    if (provider === 'log') {
-      return await sendViaLog(payload);
-    }
-
-    throw new Error(`Unsupported mail provider: ${provider}`);
+    return await withTimeout(dispatchEmail(provider, payload), 'Email delivery');
   } catch (error) {
-    if (provider === 'smtp' || provider === 'gmail-oauth') {
+    const shouldFallback =
+      (provider === 'smtp' || provider === 'gmail-oauth') &&
+      configured !== 'gmail' &&
+      configured !== 'smtp';
+
+    if (shouldFallback) {
       console.warn(`${provider} send failed, falling back to FormSubmit:`, error.message);
-      return sendViaFormSubmit(payload);
+      return withTimeout(sendViaFormSubmit(payload), 'FormSubmit fallback');
     }
 
     throw error;

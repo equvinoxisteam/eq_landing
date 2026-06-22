@@ -11,16 +11,22 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 30000);
 
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        signal: controller.signal,
       });
 
       const data = await response.json().catch(() => ({}));
@@ -32,14 +38,17 @@ export default function Contact() {
       setSubmitted(true);
       setFormData({ name: '', email: '', company: '', phone: '', message: '' });
       setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert(
-        error instanceof Error
-          ? error.message
-          : 'There was an error submitting the form. Please try again or call us directly.'
-      );
+    } catch (err) {
+      console.error('Form submission error:', err);
+      const message =
+        err instanceof DOMException && err.name === 'AbortError'
+          ? 'Request timed out. Please try again or email info@equvinoxis.com directly.'
+          : err instanceof Error
+            ? err.message
+            : 'There was an error submitting the form. Please try again or call us directly.';
+      setError(message);
     } finally {
+      window.clearTimeout(timeoutId);
       setIsSubmitting(false);
     }
   };
@@ -129,6 +138,12 @@ export default function Contact() {
                       placeholder="Tell us about your manufacturing needs..."
                     />
                   </div>
+
+                  {error && (
+                    <p className="text-sm text-red-400 bg-red-950/40 border border-red-900/50 rounded-lg px-4 py-3">
+                      {error}
+                    </p>
+                  )}
 
                   <button
                     type="submit"

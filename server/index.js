@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { getActiveMailProvider, sendContactEmail } from './mail.js';
+import { getMailConfigStatus, sendContactEmail } from './mail.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json({ limit: '32kb' }));
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, mailProvider: getActiveMailProvider() });
+  res.json({ ok: true, ...getMailConfigStatus() });
 });
 
 app.post('/api/contact', async (req, res) => {
@@ -61,4 +61,5 @@ if (fs.existsSync(distIndex)) {
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
+  console.log('Mail config:', getMailConfigStatus());
 });
