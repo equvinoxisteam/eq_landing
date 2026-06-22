@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 
 const GMAIL_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GMAIL_SEND_URL = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send';
+const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
 const DEFAULT_MAIL_TO = 'info@equvinoxis.com';
 const SEND_TIMEOUT_MS = 25000;
 
@@ -16,6 +17,10 @@ function requireEnv(name) {
     throw new Error(`Missing required environment variable: ${name}`);
   }
   return value;
+}
+
+function isRailway() {
+  return Boolean(env('RAILWAY_ENVIRONMENT') || env('RAILWAY_SERVICE_NAME') || env('RAILWAY_PROJECT_ID'));
 }
 
 function escapeHtml(value) {
@@ -63,36 +68,49 @@ function hasGmailOAuthConfig() {
   );
 }
 
+function hasWeb3FormsConfig() {
+  return Boolean(env('WEB3FORMS_ACCESS_KEY'));
+}
+
 function getProviderChain() {
   const configured = (env('MAIL_PROVIDER') || 'auto').toLowerCase();
   const chain = [];
+  const skipSmtp = isRailway() || env('DISABLE_SMTP') === 'true';
 
   const addOAuth = () => {
     if (hasGmailOAuthConfig()) chain.push('gmail-oauth');
   };
+  const addWeb3Forms = () => {
+    if (hasWeb3FormsConfig()) chain.push('web3forms');
+  };
   const addSmtp = () => {
-    if (hasSmtpConfig()) chain.push('smtp');
+    if (!skipSmtp && hasSmtpConfig()) chain.push('smtp');
   };
   const addFormSubmit = () => {
     chain.push('formsubmit');
   };
 
-  if (configured === 'formsubmit') return ['formsubmit'];
   if (configured === 'log') return ['log'];
+  if (configured === 'web3forms') {
+    return hasWeb3FormsConfig() ? ['web3forms'] : ['formsubmit'];
+  }
+  if (configured === 'formsubmit') return ['formsubmit'];
   if (configured === 'smtp') {
     addSmtp();
+    addWeb3Forms();
     addFormSubmit();
     return chain.length ? chain : ['formsubmit'];
   }
   if (configured === 'gmail-oauth' || configured === 'gmail-api') {
     addOAuth();
-    addSmtp();
+    addWeb3Forms();
     addFormSubmit();
     return chain.length ? chain : ['formsubmit'];
   }
 
-  // gmail or auto: try HTTPS API → SMTP → FormSubmit
+  // gmail / auto — HTTPS only on Railway
   addOAuth();
+  addWeb3Forms();
   addSmtp();
   addFormSubmit();
   return chain;
@@ -144,6 +162,7 @@ function createSmtpTransporter({ port, secure }) {
     host: env('SMTP_HOST') || 'smtp.gmail.com',
     port,
     secure,
+    family: 4,
     auth: {
       user: getMailUser(),
       pass: getMailPass(),
@@ -264,6 +283,36 @@ async function sendViaGmailOAuth(payload) {
   return { provider: 'gmail-oauth', data };
 }
 
+async function sendViaWeb3Forms(payload) {
+  const { name, email, company, phone, message } = payload;
+
+  const response = await fetch(WEB3FORMS_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      access_key: requireEnv('WEB3FORMS_ACCESS_KEY'),
+      subject: `New contact form: ${name} (${company})`,
+      from_name: name,
+      email,
+      phone,
+      company,
+      message: message || '(none)',
+      replyto: email,
+    }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || `Web3Forms failed (${response.status})`);
+  }
+
+  return { provider: 'web3forms', data };
+}
+
 async function sendViaFormSubmit(payload) {
   const { name, email, company, phone, message } = payload;
   const mailTo = getMailTo();
@@ -286,10 +335,23 @@ async function sendViaFormSubmit(payload) {
     }),
   });
 
-  const data = await response.json().catch(() => ({}));
+  const text = await response.text();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = { raw: text };
+  }
 
-  if (!response.ok || data.success === false) {
-    throw new Error(data.message || 'Failed to send email via FormSubmit');
+  const succeeded =
+    response.ok &&
+    data.success !== false &&
+    data.success !== 'false' &&
+    !String(data.message || '').toLowerCase().includes('error');
+
+  if (!succeeded) {
+    console.warn('FormSubmit response:', text);
+    throw new Error(data.message || `FormSubmit failed (${response.status})`);
   }
 
   return { provider: 'formsubmit', data };
@@ -306,16 +368,19 @@ export function getActiveMailProvider() {
 
 export function getMailConfigStatus() {
   const chain = getProviderChain();
-  const primary = chain[0] || 'formsubmit';
+  const primary = chain[0] || 'none';
   return {
-    ok: chain.length > 0,
+    ok: chain.length > 0 && primary !== 'none',
     provider: primary,
     fallbackChain: chain,
-    transport: primary === 'gmail-oauth' ? 'https' : primary === 'smtp' ? 'smtp' : primary,
+    transport: primary === 'gmail-oauth' || primary === 'web3forms' ? 'https' : primary,
     mailUser: getMailUser() ? `${getMailUser().slice(0, 3)}***` : 'missing',
     mailTo: getMailTo(),
     hasOAuth: hasGmailOAuthConfig(),
     hasPassword: Boolean(getMailPass()),
+    hasWeb3Forms: hasWeb3FormsConfig(),
+    smtpDisabled: isRailway() || env('DISABLE_SMTP') === 'true',
+    railway: isRailway(),
   };
 }
 
@@ -326,6 +391,10 @@ async function dispatchEmail(provider, payload) {
 
   if (provider === 'gmail-oauth') {
     return sendViaGmailOAuth(payload);
+  }
+
+  if (provider === 'web3forms') {
+    return sendViaWeb3Forms(payload);
   }
 
   if (provider === 'formsubmit') {
@@ -341,6 +410,13 @@ async function dispatchEmail(provider, payload) {
 
 export async function sendContactEmail(payload) {
   const chain = getProviderChain();
+
+  if (!chain.length) {
+    throw new Error(
+      'Email not configured. On Railway add WEB3FORMS_ACCESS_KEY or GMAIL_REFRESH_TOKEN (SMTP is blocked).'
+    );
+  }
+
   let lastError;
 
   for (const provider of chain) {

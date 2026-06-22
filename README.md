@@ -20,14 +20,26 @@ npm run dev
 - Frontend: http://localhost:5173
 - API server: http://localhost:3001
 
-## Environment variables (Gmail HTTPS API)
+## Environment variables (HTTPS email — required on Railway)
 
-Contact form email uses the **Gmail REST API over HTTPS** (not SMTP). Railway blocks or throttles SMTP ports; HTTPS is more reliable.
+Railway **blocks SMTP** ports 587/465. Use an HTTPS provider:
+
+### Option A — Web3Forms (easiest, recommended)
+
+1. Sign up at [web3forms.com](https://web3forms.com) with `info@equvinoxis.com`
+2. Copy your access key → add to Railway:
+
+```bash
+WEB3FORMS_ACCESS_KEY=your-access-key
+MAIL_TO=info@equvinoxis.com
+MAIL_USER=info@equvinoxis.com
+```
+
+### Option B — Gmail HTTPS API
 
 ```bash
 MAIL_PROVIDER=gmail
 MAIL_USER=info@equvinoxis.com
-MAIL_FROM=Equvinoxis <info@equvinoxis.com>
 MAIL_TO=info@equvinoxis.com
 GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-client-secret
