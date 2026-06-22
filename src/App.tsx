@@ -1,12 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import ScrollToTop from './components/ScrollToTop';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
-import SolutionsPage from './pages/SolutionsPage';
-import ResearchPage from './pages/ResearchPage';
 import ProductEnigma from './pages/ProductEnigma';
 import ProductIndianet from './pages/ProductIndianet';
 import ProductSolidXCad from './pages/ProductSolidXCad';
@@ -23,8 +21,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/solutions" element={<SolutionsPage />} />
-          <Route path="/research" element={<ResearchPage />} />
+          <Route path="/solutions" element={<Navigate to="/" replace />} />
+          <Route path="/research" element={<Navigate to="/" replace />} />
           <Route path="/products/enigma" element={<ProductEnigma />} />
           <Route path="/products/indianet" element={<ProductIndianet />} />
           <Route path="/products/solidxcad" element={<ProductSolidXCad />} />

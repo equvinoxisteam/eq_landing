@@ -71,24 +71,6 @@ export default function Navigation() {
             </div>
 
             <Link
-              to="/solutions"
-              className={`text-sm font-medium transition-colors ${
-                isActive('/solutions') ? 'text-blue-400' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Solutions
-            </Link>
-
-            <Link
-              to="/research"
-              className={`text-sm font-medium transition-colors ${
-                isActive('/research') ? 'text-blue-400' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              Research
-            </Link>
-
-            <Link
               to="/about"
               className={`text-sm font-medium transition-colors ${
                 isActive('/about') ? 'text-blue-400' : 'text-gray-300 hover:text-white'
@@ -156,26 +138,6 @@ export default function Navigation() {
                   </Link>
                 </div>
               </div>
-
-              <Link
-                to="/solutions"
-                onClick={() => setIsOpen(false)}
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/solutions') ? 'text-blue-400' : 'text-gray-300'
-                }`}
-              >
-                Solutions
-              </Link>
-
-              <Link
-                to="/research"
-                onClick={() => setIsOpen(false)}
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/research') ? 'text-blue-400' : 'text-gray-300'
-                }`}
-              >
-                Research
-              </Link>
 
               <Link
                 to="/about"

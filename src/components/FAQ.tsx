@@ -13,14 +13,19 @@ const faqCategories = [
           'Equvinoxis offers Enigma AI for intelligent CNC partner matching, Indianet for connected supply chain operations, and SolidXCad for text-to-manufacture-ready CAD generation. We also deliver custom AI software and manufacturing research services.',
       },
       {
+        question: 'How does Indianet pricing work?',
+        answer:
+          'Indianet offers a free supplier plan (admin-approved) plus paid tiers: Basic (₹1,65,000/yr), Plus (₹2,47,500/yr), Pro (₹3,51,000/yr), and Premium (₹11,25,000/yr). All paid plans are tax exclusive and available on annual or 6-month billing. Higher tiers add public profiles, verified badges, more RFQ responses, showcases, and advertising.',
+      },
+      {
         question: 'What is SolidXCad and who is it for?',
         answer:
-          'SolidXCad is our text-to-CAD platform that converts design descriptions into production-grade 3D models. It is built for engineering teams, manufacturers, and product designers who need faster iteration and manufacture-ready outputs for CNC, tooling, and shop-floor workflows.',
+          'SolidXCad is a cloud CAD workbench that turns engineering prompts into parametric STEP models. Engineering teams can inspect assemblies in 3D — with catalog fasteners, URDF robots, and multi-body structure — then export STL, G-code, and URDF directly from the browser.',
       },
       {
         question: 'How is Enigma AI different from a traditional marketplace?',
         answer:
-          'Enigma AI uses intelligent matching to connect your CNC requirements with the right manufacturing partners in about 60 seconds — with zero commission and high matching accuracy. It focuses on precision fit, not generic listings.',
+          'Enigma AI is an RFQ-first platform: buyers and hybrid accounts publish RFQs for free, while manufacturers browse the pool and request bids based on their plan (Free, Standard, Pro, or Enterprise). AI matching ranks the best-fit partners — not generic listings.',
       },
     ],
   },
@@ -55,7 +60,7 @@ const faqCategories = [
       {
         question: 'What support do you provide?',
         answer:
-          'All plans include email support at info@equvinoxis.com. Professional and Enterprise customers receive priority support, dedicated success management, and escalation paths for critical production issues.',
+          'All plans include email support at info@equvinoxis.com. Pro and Enterprise manufacturer plans include priority support, with Enterprise offering concierge deals and dedicated buyer matching.',
       },
       {
         question: 'Do you support small and mid-size manufacturers?',
@@ -63,9 +68,9 @@ const faqCategories = [
           'Absolutely. Our solutions scale from growing manufacturers to large enterprises. We offer flexible plans and can tailor product bundles based on your operational size and goals.',
       },
       {
-        question: 'How does pricing work?',
+        question: 'How does Enigma AI pricing work?',
         answer:
-          'Pricing depends on the products and modules you need. Contact our team for a tailored quote — we offer Starter, Professional, and Enterprise plans designed to scale with your manufacturing operations.',
+          'Buyer accounts are always free with unlimited RFQ publishing. Manufacturer plans range from Free (view-only RFQ pool) to Standard (₹3,42,000/yr), Pro (₹5,22,000/yr), and Enterprise (₹15,75,000/yr) with increasing RFQ request limits and profile visibility. Upgrades are admin-approved; downgrades include a 24-hour grace period.',
       },
     ],
   },

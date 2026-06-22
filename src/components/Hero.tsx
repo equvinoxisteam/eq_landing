@@ -76,7 +76,7 @@ export default function Hero() {
               className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-amber-500/50 transition-all duration-300"
             >
               <div className="text-2xl font-bold text-amber-400 mb-2">SolidXCad</div>
-              <div className="text-gray-400">Text-to-CAD Models</div>
+              <div className="text-gray-400">Cloud CAD Workbench</div>
             </a>
           </div>
         </div>

@@ -4,11 +4,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { sendContactEmail } from './mail.js';
-
-dotenv.config();
+import { getActiveMailProvider, sendContactEmail } from './mail.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 const distPath = path.join(__dirname, '..', 'dist');
 const distIndex = path.join(distPath, 'index.html');
 const app = express();
@@ -18,7 +17,7 @@ app.use(cors());
 app.use(express.json({ limit: '32kb' }));
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, mailProvider: process.env.MAIL_PROVIDER || 'unset' });
+  res.json({ ok: true, mailProvider: getActiveMailProvider() });
 });
 
 app.post('/api/contact', async (req, res) => {
@@ -33,7 +32,7 @@ app.post('/api/contact', async (req, res) => {
       return res.status(400).json({ error: 'Invalid email address.' });
     }
 
-    await sendContactEmail({
+    const result = await sendContactEmail({
       name: name.trim(),
       email: email.trim(),
       company: company.trim(),
@@ -41,10 +40,14 @@ app.post('/api/contact', async (req, res) => {
       message: typeof message === 'string' ? message.trim() : '',
     });
 
-    res.json({ ok: true });
+    res.json({ ok: true, provider: result.provider });
   } catch (error) {
     console.error('Contact API error:', error);
-    res.status(500).json({ error: 'Failed to send message. Please try again later.' });
+    const message =
+      process.env.NODE_ENV === 'development' && error instanceof Error
+        ? error.message
+        : 'Failed to send message. Please try again later.';
+    res.status(500).json({ error: message });
   }
 });
 

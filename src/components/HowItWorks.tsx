@@ -3,28 +3,28 @@ import { PRODUCT_URLS } from '../constants/site';
 const offerings = [
   {
     title: 'Enigma AI',
-    subtitle: 'CNC Partner Matching',
+    subtitle: 'RFQ Marketplace & AI Matching',
     description:
-      'Match CNC requirements with the right manufacturing partners in about 60 seconds. Cut sourcing time, reduce commission costs, and connect with verified capabilities.',
-    features: ['60-second partner matching', 'Zero commission', 'Verified manufacturer network'],
+      'Buyers publish RFQs for free. Manufacturers browse the pool and request bids on tiered plans — Free, Standard, Pro, and Enterprise — with AI-powered matching.',
+    features: ['Free buyer RFQ publishing', 'Manufacturer plans from ₹0–₹15.75L/yr', 'Admin-approved upgrades'],
     href: PRODUCT_URLS.enigma,
     external: true,
   },
   {
     title: 'Indianet',
-    subtitle: 'Connected Supply Chain',
+    subtitle: 'B2B Supplier Marketplace',
     description:
-      'Unify raw materials, machinery, logistics, and compliance in one platform. Gain visibility across suppliers, shipments, and production dependencies.',
-    features: ['End-to-end supply chain view', 'Verified supplier network', 'Compliance tracking'],
+      'Manufacturers build supplier stores, publish product catalogues, and respond to buyer RFQs. Plans from Free to Premium with annual or 6-month billing.',
+    features: ['Supplier store & catalogue', 'Buyer RFQ responses', 'Verified badges & ads'],
     href: PRODUCT_URLS.indianet,
     external: true,
   },
   {
     title: 'SolidXCad',
-    subtitle: 'Text-to-Manufacture-Ready CAD',
+    subtitle: 'Cloud CAD Workbench',
     description:
-      'Generate production-grade CAD models from plain text. Accelerate design cycles and deliver outputs ready for CNC, tooling, and shop-floor workflows.',
-    features: ['Text-to-CAD generation', 'Manufacturing-ready models', 'Faster design-to-production'],
+      'Sign in to generate parametric STEP geometry from prompts, inspect assemblies in 3D, and export STL, G-code, and URDF.',
+    features: ['Text-to-STEP parametric models', 'Orbit, measure & section in-browser', 'Assemblies, fasteners & URDF robots'],
     href: PRODUCT_URLS.solidxcad,
     external: true,
   },

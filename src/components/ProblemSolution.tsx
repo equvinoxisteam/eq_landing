@@ -13,7 +13,7 @@ const products = [
   },
   {
     name: 'SolidXCad',
-    summary: 'Turn design descriptions into manufacture-ready CAD models — production-grade output for CNC and tooling workflows.',
+    summary: 'Cloud CAD workbench — from prompt to STEP with in-browser 3D inspection and export to STL, G-code, and URDF.',
     href: PRODUCT_URLS.solidxcad,
   },
 ];

@@ -6,8 +6,8 @@ const products = [
     name: 'Enigma AI',
     tagline: 'Where Intelligence Meets Manufacturing',
     description:
-      'AI-powered CNC partner matching in 60 seconds. Zero commission. 99.9% accuracy.',
-    benefits: ['Zero commission fees', 'Real-time capacity tracking', '60-second match time'],
+      'RFQ marketplace with AI matching. Buyers publish free — manufacturers browse and bid on plans from Free to Enterprise.',
+    benefits: ['Free buyer RFQ publishing', 'Tiered manufacturer plans', 'AI-powered partner matching'],
     borderColor: 'border-blue-500/50',
     accent: 'text-blue-400',
     href: PRODUCT_URLS.enigma,
@@ -17,8 +17,8 @@ const products = [
     name: 'Indianet',
     tagline: 'Manufacturing. Connected. Intelligent.',
     description:
-      'End-to-end supply chain platform spanning raw materials, machines, logistics, and compliance.',
-    benefits: ['Verified suppliers', 'Real-time tracking', 'Integrated compliance'],
+      'B2B supplier marketplace. Build your store, publish catalogues, and respond to buyer RFQs on plans from Free to Premium.',
+    benefits: ['Free supplier onboarding', 'Annual & 6-month billing', 'Tiered RFQ & showcase limits'],
     borderColor: 'border-purple-500/50',
     accent: 'text-purple-400',
     href: PRODUCT_URLS.indianet,
@@ -26,10 +26,10 @@ const products = [
   },
   {
     name: 'SolidXCad',
-    tagline: 'Text to Manufacture-Ready CAD',
+    tagline: 'Cloud CAD Workbench',
     description:
-      'Generate production-grade CAD models from plain text. Create fully detailed, manufacturing-ready 3D models for CNC and tooling workflows.',
-    benefits: ['Text-to-CAD generation', 'Manufacture-ready output', 'Faster design cycles'],
+      'From prompt to STEP in one workspace. Generate parametric geometry, inspect assemblies in 3D, and export STL, G-code, and URDF.',
+    benefits: ['Text-to-STEP B-rep models', 'In-browser 3D workbench', 'STL, G-code & URDF export'],
     borderColor: 'border-amber-500/50',
     accent: 'text-amber-400',
     href: PRODUCT_URLS.solidxcad,

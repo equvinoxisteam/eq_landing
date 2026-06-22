@@ -1,7 +1,7 @@
 export const CONTACT_EMAIL = 'info@equvinoxis.com';
 
 export const PRODUCT_URLS = {
-  enigma: 'https://www.enigma.equvinoxis.com',
-  indianet: 'https://www.indianet.equvinoxis.com',
-  solidxcad: 'https://www.solidxcad.equvinoxis.com',
+  enigma: 'https://enigma.equvinoxis.com/role-selection',
+  indianet: 'https://indianet.equvinoxis.com/',
+  solidxcad: 'https://solidxcad.equvinoxis.com/login?fresh=1',
 } as const;

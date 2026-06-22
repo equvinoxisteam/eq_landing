@@ -186,12 +186,11 @@ export default function Contact() {
                 <h4 className="text-xl font-bold mb-4">Business Hours</h4>
                 <div className="space-y-2 text-gray-300">
                   <p className="flex justify-between">
-                    <span>Monday - Friday:</span>
+                    <span>Monday - Saturday:</span>
                     <span className="text-white font-semibold">9 AM - 6 PM</span>
                   </p>
-                 
                   <p className="flex justify-between">
-                    <span>Saturday & Sunday:</span>
+                    <span>Sunday:</span>
                     <span className="text-white font-semibold">Closed</span>
                   </p>
                 </div>

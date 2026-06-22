@@ -6,9 +6,9 @@ Equvinoxis landing page — Industry 4.0 manufacturing platform showcasing Enigm
 
 | Product | URL |
 |---------|-----|
-| Enigma AI | https://www.enigma.equvinoxis.com |
-| Indianet | https://www.indianet.equvinoxis.com |
-| SolidXCad | https://www.solidxcad.equvinoxis.com |
+| Enigma AI | https://enigma.equvinoxis.com/role-selection |
+| Indianet | https://indianet.equvinoxis.com/ |
+| SolidXCad | https://solidxcad.equvinoxis.com/login?fresh=1 |
 
 ## Run locally
 
