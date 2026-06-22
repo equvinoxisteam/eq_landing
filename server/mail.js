@@ -137,7 +137,9 @@ function getProviderChain() {
     addWeb3Forms();
     addOAuth();
     addSmtp();
-    addFormSubmit();
+    if (env('MAIL_ALLOW_FORMSUBMIT_FALLBACK') === 'true') {
+      addFormSubmit();
+    }
     return chain.length ? chain : ['formsubmit'];
   }
 
