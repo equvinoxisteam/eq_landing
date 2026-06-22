@@ -4,7 +4,10 @@ const GMAIL_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GMAIL_SEND_URL = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send';
 const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
 const DEFAULT_MAIL_TO = 'info@equvinoxis.com';
+const DEFAULT_REDIRECT_URI = 'https://developers.google.com/oauthplayground';
 const SEND_TIMEOUT_MS = 25000;
+
+let cachedRefreshToken = '';
 
 function env(name) {
   const raw = process.env[name]?.trim() || '';
@@ -47,6 +50,14 @@ function getGmailClientSecret() {
   return env('GMAIL_CLIENT_SECRET') || env('GOOGLE_CLIENT_SECRET');
 }
 
+function getGmailRedirectUri() {
+  return env('GMAIL_REDIRECT_URI') || DEFAULT_REDIRECT_URI;
+}
+
+function getRefreshToken() {
+  return cachedRefreshToken || env('GMAIL_REFRESH_TOKEN');
+}
+
 function getMailFrom() {
   return env('MAIL_FROM') || `Equvinoxis <${getMailUser() || DEFAULT_MAIL_TO}>`;
 }
@@ -55,17 +66,16 @@ function getMailTo() {
   return env('MAIL_TO') || getMailUser() || DEFAULT_MAIL_TO;
 }
 
+function hasGmailApiCredentials() {
+  return Boolean(getGmailClientId() && getGmailClientSecret() && getMailUser());
+}
+
 function hasSmtpConfig() {
   return Boolean(getMailUser() && getMailPass());
 }
 
 function hasGmailOAuthConfig() {
-  return Boolean(
-    getGmailClientId() &&
-      getGmailClientSecret() &&
-      env('GMAIL_REFRESH_TOKEN') &&
-      getMailUser()
-  );
+  return Boolean(hasGmailApiCredentials() && (getRefreshToken() || env('GMAIL_AUTH_CODE')));
 }
 
 function hasWeb3FormsConfig() {
@@ -92,23 +102,24 @@ function getProviderChain() {
 
   if (configured === 'log') return ['log'];
   if (configured === 'web3forms') {
-    return hasWeb3FormsConfig() ? ['web3forms'] : ['formsubmit'];
+    return hasWeb3FormsConfig() ? ['web3forms', 'formsubmit'] : ['formsubmit'];
   }
   if (configured === 'formsubmit') return ['formsubmit'];
   if (configured === 'smtp') {
     addSmtp();
-    addWeb3Forms();
-    addFormSubmit();
-    return chain.length ? chain : ['formsubmit'];
-  }
-  if (configured === 'gmail-oauth' || configured === 'gmail-api') {
     addOAuth();
     addWeb3Forms();
     addFormSubmit();
     return chain.length ? chain : ['formsubmit'];
   }
+  if (configured === 'gmail-oauth' || configured === 'gmail-api' || configured === 'gmail') {
+    addOAuth();
+    addWeb3Forms();
+    addSmtp();
+    addFormSubmit();
+    return chain.length ? chain : ['formsubmit'];
+  }
 
-  // gmail / auto — HTTPS only on Railway
   addOAuth();
   addWeb3Forms();
   addSmtp();
@@ -157,30 +168,45 @@ function withTimeout(promise, label) {
   ]);
 }
 
-function createSmtpTransporter({ port, secure }) {
-  return nodemailer.createTransport({
-    host: env('SMTP_HOST') || 'smtp.gmail.com',
-    port,
-    secure,
-    family: 4,
-    auth: {
-      user: getMailUser(),
-      pass: getMailPass(),
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-  });
-}
-
-async function getGmailAccessToken() {
+async function exchangeAuthCodeForTokens(code) {
   const response = await fetch(GMAIL_TOKEN_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       client_id: getGmailClientId(),
       client_secret: getGmailClientSecret(),
-      refresh_token: requireEnv('GMAIL_REFRESH_TOKEN'),
+      code,
+      grant_type: 'authorization_code',
+      redirect_uri: getGmailRedirectUri(),
+    }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error_description || data.error || 'Failed to exchange Gmail auth code');
+  }
+
+  if (data.refresh_token) {
+    cachedRefreshToken = data.refresh_token;
+    console.log('[mail] SUCCESS — save this as GMAIL_REFRESH_TOKEN in Railway:');
+    console.log(data.refresh_token);
+  }
+
+  if (!data.access_token) {
+    throw new Error('Gmail auth code exchange did not return an access token');
+  }
+
+  return data.access_token;
+}
+
+async function refreshGmailAccessToken(refreshToken) {
+  const response = await fetch(GMAIL_TOKEN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: getGmailClientId(),
+      client_secret: getGmailClientSecret(),
+      refresh_token: refreshToken,
       grant_type: 'refresh_token',
     }),
   });
@@ -191,6 +217,22 @@ async function getGmailAccessToken() {
   }
 
   return data.access_token;
+}
+
+async function getGmailAccessToken() {
+  const refreshToken = getRefreshToken();
+  if (refreshToken) {
+    return refreshGmailAccessToken(refreshToken);
+  }
+
+  const authCode = env('GMAIL_AUTH_CODE');
+  if (authCode) {
+    return exchangeAuthCodeForTokens(authCode);
+  }
+
+  throw new Error(
+    'Gmail API needs GMAIL_REFRESH_TOKEN or GMAIL_AUTH_CODE. Run: node scripts/gmail-oauth-setup.js'
+  );
 }
 
 function buildRawEmail({ from, to, replyTo, subject, html }) {
@@ -212,6 +254,22 @@ function buildRawEmail({ from, to, replyTo, subject, html }) {
     .replace(/=+$/, '');
 }
 
+function createSmtpTransporter({ port, secure }) {
+  return nodemailer.createTransport({
+    host: env('SMTP_HOST') || 'smtp.gmail.com',
+    port,
+    secure,
+    family: 4,
+    auth: {
+      user: getMailUser(),
+      pass: getMailPass(),
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
+  });
+}
+
 async function sendViaSmtp(payload) {
   const { name, email, company, phone, message } = payload;
   const mailFrom = getMailFrom();
@@ -226,13 +284,10 @@ async function sendViaSmtp(payload) {
     html: buildContactHtml({ name, email, company, phone, message }),
   };
 
-  const customPort = env('SMTP_PORT');
-  const attempts = customPort
-    ? [{ port: Number(customPort), secure: env('SMTP_SECURE') === 'true' }]
-    : [
-        { port: 465, secure: true },
-        { port: 587, secure: false },
-      ];
+  const attempts = [
+    { port: 465, secure: true },
+    { port: 587, secure: false },
+  ];
 
   let lastError;
 
@@ -316,45 +371,73 @@ async function sendViaWeb3Forms(payload) {
 async function sendViaFormSubmit(payload) {
   const { name, email, company, phone, message } = payload;
   const mailTo = getMailTo();
+  const subject = `New contact form: ${name} (${company})`;
 
-  const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(mailTo)}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
+  const attempts = [
+    {
+      url: `https://formsubmit.co/ajax/${encodeURIComponent(mailTo)}`,
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        company,
+        phone,
+        message: message || '(none)',
+        _subject: subject,
+        _template: 'table',
+      }),
     },
-    body: JSON.stringify({
-      name,
-      email,
-      company,
-      phone,
-      message: message || '(none)',
-      _subject: `New contact form: ${name} (${company})`,
-      _template: 'table',
-      _captcha: 'false',
-    }),
-  });
+    {
+      url: `https://formsubmit.co/${encodeURIComponent(mailTo)}`,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        name,
+        email,
+        company,
+        phone,
+        message: message || '(none)',
+        _subject: subject,
+        _template: 'table',
+      }).toString(),
+    },
+  ];
 
-  const text = await response.text();
-  let data = {};
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch {
-    data = { raw: text };
+  let lastError;
+
+  for (const attempt of attempts) {
+    try {
+      const response = await fetch(attempt.url, {
+        method: 'POST',
+        headers: attempt.headers,
+        body: attempt.body,
+        redirect: 'manual',
+      });
+
+      const text = await response.text();
+      let data = {};
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        data = { raw: text };
+      }
+
+      const succeeded =
+        response.status === 302 ||
+        response.status === 200 ||
+        (response.ok && data.success !== false && data.success !== 'false');
+
+      if (succeeded) {
+        return { provider: 'formsubmit', data };
+      }
+
+      lastError = new Error(data.message || `FormSubmit failed (${response.status})`);
+      console.warn('FormSubmit response:', text.slice(0, 200));
+    } catch (error) {
+      lastError = error;
+    }
   }
 
-  const succeeded =
-    response.ok &&
-    data.success !== false &&
-    data.success !== 'false' &&
-    !String(data.message || '').toLowerCase().includes('error');
-
-  if (!succeeded) {
-    console.warn('FormSubmit response:', text);
-    throw new Error(data.message || `FormSubmit failed (${response.status})`);
-  }
-
-  return { provider: 'formsubmit', data };
+  throw lastError || new Error('FormSubmit failed');
 }
 
 async function sendViaLog(payload) {
@@ -369,6 +452,8 @@ export function getActiveMailProvider() {
 export function getMailConfigStatus() {
   const chain = getProviderChain();
   const primary = chain[0] || 'none';
+  const needsGmailToken = hasGmailApiCredentials() && !getRefreshToken() && !env('GMAIL_AUTH_CODE');
+
   return {
     ok: chain.length > 0 && primary !== 'none',
     provider: primary,
@@ -377,46 +462,29 @@ export function getMailConfigStatus() {
     mailUser: getMailUser() ? `${getMailUser().slice(0, 3)}***` : 'missing',
     mailTo: getMailTo(),
     hasOAuth: hasGmailOAuthConfig(),
+    hasGmailApi: hasGmailApiCredentials(),
     hasPassword: Boolean(getMailPass()),
     hasWeb3Forms: hasWeb3FormsConfig(),
     smtpDisabled: isRailway() || env('DISABLE_SMTP') === 'true',
     railway: isRailway(),
+    needsGmailToken,
+    setupHint: needsGmailToken
+      ? 'Add GMAIL_REFRESH_TOKEN to Railway (run: node scripts/gmail-oauth-setup.js locally)'
+      : null,
   };
 }
 
 async function dispatchEmail(provider, payload) {
-  if (provider === 'smtp') {
-    return sendViaSmtp(payload);
-  }
-
-  if (provider === 'gmail-oauth') {
-    return sendViaGmailOAuth(payload);
-  }
-
-  if (provider === 'web3forms') {
-    return sendViaWeb3Forms(payload);
-  }
-
-  if (provider === 'formsubmit') {
-    return sendViaFormSubmit(payload);
-  }
-
-  if (provider === 'log') {
-    return sendViaLog(payload);
-  }
-
+  if (provider === 'smtp') return sendViaSmtp(payload);
+  if (provider === 'gmail-oauth') return sendViaGmailOAuth(payload);
+  if (provider === 'web3forms') return sendViaWeb3Forms(payload);
+  if (provider === 'formsubmit') return sendViaFormSubmit(payload);
+  if (provider === 'log') return sendViaLog(payload);
   throw new Error(`Unsupported mail provider: ${provider}`);
 }
 
 export async function sendContactEmail(payload) {
   const chain = getProviderChain();
-
-  if (!chain.length) {
-    throw new Error(
-      'Email not configured. On Railway add WEB3FORMS_ACCESS_KEY or GMAIL_REFRESH_TOKEN (SMTP is blocked).'
-    );
-  }
-
   let lastError;
 
   for (const provider of chain) {
@@ -430,5 +498,14 @@ export async function sendContactEmail(payload) {
     }
   }
 
+  if (hasGmailApiCredentials() && !getRefreshToken() && !env('GMAIL_AUTH_CODE')) {
+    throw new Error(
+      'Email failed: Railway blocks SMTP. Add GMAIL_REFRESH_TOKEN to Railway — run node scripts/gmail-oauth-setup.js on your PC once.'
+    );
+  }
+
   throw lastError || new Error('All email delivery methods failed');
 }
+
+// Load refresh token from env on startup
+cachedRefreshToken = env('GMAIL_REFRESH_TOKEN');
