@@ -236,7 +236,14 @@ async function refreshGmailAccessToken(refreshToken) {
 
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error_description || data.error || 'Failed to refresh Gmail access token');
+    const code = data.error || 'token_error';
+    const detail = data.error_description || 'Failed to refresh Gmail access token';
+    if (code === 'unauthorized_client') {
+      throw new Error(
+        `${code}: ${detail}. Regenerate GMAIL_REFRESH_TOKEN with npm run gmail:setup (or OAuth Playground with "Use your own OAuth credentials" enabled).`
+      );
+    }
+    throw new Error(`${code}: ${detail}`);
   }
 
   return data.access_token;
