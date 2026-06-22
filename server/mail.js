@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 const GMAIL_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GMAIL_SEND_URL = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send';
 const DEFAULT_MAIL_TO = 'info@equvinoxis.com';
-const SEND_TIMEOUT_MS = 20000;
+const SEND_TIMEOUT_MS = 25000;
 
 function env(name) {
   const raw = process.env[name]?.trim() || '';
@@ -63,56 +63,43 @@ function hasGmailOAuthConfig() {
   );
 }
 
-function resolveMailProvider() {
+function getProviderChain() {
   const configured = (env('MAIL_PROVIDER') || 'auto').toLowerCase();
+  const chain = [];
 
-  if (configured === 'gmail-oauth' || configured === 'gmail-api') {
-    return hasGmailOAuthConfig() ? 'gmail-oauth' : 'unconfigured';
-  }
+  const addOAuth = () => {
+    if (hasGmailOAuthConfig()) chain.push('gmail-oauth');
+  };
+  const addSmtp = () => {
+    if (hasSmtpConfig()) chain.push('smtp');
+  };
+  const addFormSubmit = () => {
+    chain.push('formsubmit');
+  };
 
+  if (configured === 'formsubmit') return ['formsubmit'];
+  if (configured === 'log') return ['log'];
   if (configured === 'smtp') {
-    return hasSmtpConfig() ? 'smtp' : 'unconfigured';
+    addSmtp();
+    addFormSubmit();
+    return chain.length ? chain : ['formsubmit'];
+  }
+  if (configured === 'gmail-oauth' || configured === 'gmail-api') {
+    addOAuth();
+    addSmtp();
+    addFormSubmit();
+    return chain.length ? chain : ['formsubmit'];
   }
 
-  if (configured === 'gmail' || configured === 'auto') {
-    if (hasGmailOAuthConfig()) {
-      return 'gmail-oauth';
-    }
-    if (configured === 'gmail') {
-      if (hasSmtpConfig() && env('MAIL_ALLOW_SMTP_FALLBACK') === 'true') {
-        return 'smtp';
-      }
-      return 'unconfigured';
-    }
-    if (hasSmtpConfig()) {
-      return 'smtp';
-    }
-    if (configured === 'formsubmit') {
-      return 'formsubmit';
-    }
-    if (configured === 'log') {
-      return 'log';
-    }
-    return 'formsubmit';
-  }
+  // gmail or auto: try HTTPS API → SMTP → FormSubmit
+  addOAuth();
+  addSmtp();
+  addFormSubmit();
+  return chain;
+}
 
-  if (configured === 'formsubmit') {
-    return 'formsubmit';
-  }
-
-  if (configured === 'log') {
-    return 'log';
-  }
-
-  if (hasGmailOAuthConfig()) {
-    return 'gmail-oauth';
-  }
-
-  if (hasSmtpConfig()) {
-    return 'smtp';
-  }
-
-  return 'formsubmit';
+function resolveMailProvider() {
+  return getProviderChain()[0] || 'formsubmit';
 }
 
 function buildContactHtml({ name, email, company, phone, message }) {
@@ -206,12 +193,6 @@ function buildRawEmail({ from, to, replyTo, subject, html }) {
     .replace(/=+$/, '');
 }
 
-async function sendMailWithTransporter(transporter, mailOptions) {
-  await transporter.verify();
-  const info = await transporter.sendMail(mailOptions);
-  return info;
-}
-
 async function sendViaSmtp(payload) {
   const { name, email, company, phone, message } = payload;
   const mailFrom = getMailFrom();
@@ -230,8 +211,8 @@ async function sendViaSmtp(payload) {
   const attempts = customPort
     ? [{ port: Number(customPort), secure: env('SMTP_SECURE') === 'true' }]
     : [
-        { port: 587, secure: false },
         { port: 465, secure: true },
+        { port: 587, secure: false },
       ];
 
   let lastError;
@@ -239,7 +220,7 @@ async function sendViaSmtp(payload) {
   for (const attempt of attempts) {
     try {
       const transporter = createSmtpTransporter(attempt);
-      const info = await sendMailWithTransporter(transporter, mailOptions);
+      const info = await transporter.sendMail(mailOptions);
       return { provider: 'smtp', data: { messageId: info.messageId, port: attempt.port } };
     } catch (error) {
       lastError = error;
@@ -324,17 +305,17 @@ export function getActiveMailProvider() {
 }
 
 export function getMailConfigStatus() {
-  const provider = resolveMailProvider();
+  const chain = getProviderChain();
+  const primary = chain[0] || 'formsubmit';
   return {
-    ok: provider !== 'unconfigured',
-    provider,
-    transport: provider === 'gmail-oauth' ? 'https' : provider === 'smtp' ? 'smtp' : provider,
+    ok: chain.length > 0,
+    provider: primary,
+    fallbackChain: chain,
+    transport: primary === 'gmail-oauth' ? 'https' : primary === 'smtp' ? 'smtp' : primary,
     mailUser: getMailUser() ? `${getMailUser().slice(0, 3)}***` : 'missing',
     mailTo: getMailTo(),
     hasOAuth: hasGmailOAuthConfig(),
     hasPassword: Boolean(getMailPass()),
-    needsRefreshToken:
-      (env('MAIL_PROVIDER') || 'auto').toLowerCase() === 'gmail' && !hasGmailOAuthConfig(),
   };
 }
 
@@ -359,32 +340,19 @@ async function dispatchEmail(provider, payload) {
 }
 
 export async function sendContactEmail(payload) {
-  const provider = resolveMailProvider();
-  const configured = (env('MAIL_PROVIDER') || 'auto').toLowerCase();
+  const chain = getProviderChain();
+  let lastError;
 
-  if (provider === 'unconfigured') {
-    if (configured === 'gmail' || configured === 'gmail-oauth' || configured === 'gmail-api') {
-      throw new Error(
-        'Gmail HTTPS API is not configured. Add GMAIL_REFRESH_TOKEN to Railway (see README).'
-      );
+  for (const provider of chain) {
+    try {
+      const result = await withTimeout(dispatchEmail(provider, payload), `${provider} delivery`);
+      console.log(`[mail] sent via ${provider}`);
+      return result;
+    } catch (error) {
+      lastError = error;
+      console.warn(`[mail] ${provider} failed:`, error.message);
     }
-    throw new Error('Email is not configured. Check MAIL_* environment variables.');
   }
 
-  try {
-    return await withTimeout(dispatchEmail(provider, payload), 'Email delivery');
-  } catch (error) {
-    const shouldFallback =
-      (provider === 'smtp' || provider === 'gmail-oauth') &&
-      configured !== 'gmail' &&
-      configured !== 'gmail-oauth' &&
-      configured !== 'smtp';
-
-    if (shouldFallback) {
-      console.warn(`${provider} send failed, falling back to FormSubmit:`, error.message);
-      return withTimeout(sendViaFormSubmit(payload), 'FormSubmit fallback');
-    }
-
-    throw error;
-  }
+  throw lastError || new Error('All email delivery methods failed');
 }
