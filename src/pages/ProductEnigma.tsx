@@ -171,6 +171,60 @@ const pharmaBuyerFeatures = [
   'No subscription fee',
 ];
 
+function PlatformLaunchCards({ className = '' }: { className?: string }) {
+  return (
+    <div className={`grid sm:grid-cols-2 gap-5 max-w-3xl mx-auto ${className}`}>
+      <a
+        href={PRODUCT_URLS.enigma}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex flex-col text-left bg-gray-900/60 backdrop-blur-sm border border-blue-800/40 hover:border-blue-500/60 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-0.5"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-11 h-11 rounded-xl bg-blue-900/50 border border-blue-700/50 flex items-center justify-center">
+            <Factory className="w-5 h-5 text-blue-400" />
+          </div>
+          <div>
+            <div className="font-bold text-lg text-white">Launch Enigma</div>
+            <div className="text-xs text-blue-400 font-medium">Manufacturing</div>
+          </div>
+        </div>
+        <p className="text-sm text-gray-400 mb-5 flex-1">
+          CNC & precision manufacturing RFQ matching for buyers and machine shops.
+        </p>
+        <span className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 group-hover:text-blue-300">
+          Open platform
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </span>
+      </a>
+
+      <a
+        href={PRODUCT_URLS.enigmaPharma}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex flex-col text-left bg-gray-900/60 backdrop-blur-sm border border-emerald-800/40 hover:border-emerald-500/60 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10 hover:-translate-y-0.5"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-11 h-11 rounded-xl bg-emerald-900/50 border border-emerald-700/50 flex items-center justify-center">
+            <FlaskConical className="w-5 h-5 text-emerald-400" />
+          </div>
+          <div>
+            <div className="font-bold text-lg text-white">Launch Enigma Pharma</div>
+            <div className="text-xs text-emerald-400 font-medium">Pharma CDMO</div>
+          </div>
+        </div>
+        <p className="text-sm text-gray-400 mb-5 flex-1">
+          API, formulation, fill-finish & biologics sourcing with NDA-gated RFQ workflows.
+        </p>
+        <span className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 group-hover:text-emerald-300">
+          Open platform
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </span>
+      </a>
+    </div>
+  );
+}
+
 export default function ProductEnigma() {
   return (
     <div className="pt-20 bg-black text-white">
@@ -179,34 +233,16 @@ export default function ProductEnigma() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-3 bg-blue-900/30 border border-blue-800/50 rounded-full px-6 py-3 mb-6">
               <Brain className="w-6 h-6 text-blue-400" />
-              <span className="text-blue-400 font-semibold">Enigma AI</span>
+              <span className="text-blue-400 font-semibold">Enigma</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Where Intelligence Meets <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Manufacturing</span>
+            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+              AI-Powered <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Sourcing Platform</span>
             </h1>
-            <p className="text-xl text-gray-400 mb-8">
-              AI-powered RFQ matching for buyers and manufacturers. Buyers publish RFQs free — manufacturers browse, request, and upgrade for full access.
+            <p className="text-lg text-gray-500 mb-3">Manufacturing &amp; Pharma</p>
+            <p className="text-xl text-gray-400 mb-10">
+              Two verticals, one RFQ-first workflow. Buyers publish for free — partners browse, bid, and upgrade based on their plan.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={PRODUCT_URLS.enigma}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30"
-              >
-                Launch Enigma AI
-                <ArrowRight className="w-5 h-5" />
-              </a>
-              <a
-                href={PRODUCT_URLS.enigmaPharma}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/30"
-              >
-                Launch Enigma Pharma
-                <ArrowRight className="w-5 h-5" />
-              </a>
-            </div>
+            <PlatformLaunchCards />
           </div>
         </div>
       </section>
@@ -390,20 +426,11 @@ export default function ProductEnigma() {
                 API, Formulation & More
               </span>
             </h2>
-            <p className="text-xl text-gray-400 mb-8 leading-relaxed">
+            <p className="text-xl text-gray-400 leading-relaxed">
               RFQ workflow for Indian pharma CDMO sourcing — not a parts catalog, not a $100k ERP.
               Sponsors find GMP-certified partners for API manufacturing, formulation, fill-finish, and biologics
               with NDA-gated PDF workflows, GMP certification matching, and AI-assisted CDMO ranking.
             </p>
-            <a
-              href={PRODUCT_URLS.enigmaPharma}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/30"
-            >
-              Launch Enigma Pharma
-              <ArrowRight className="w-5 h-5" />
-            </a>
           </div>
 
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-20">

@@ -10,7 +10,22 @@ const faqCategories = [
       {
         question: 'What products does Equvinoxis offer?',
         answer:
-          'Equvinoxis offers Enigma AI for intelligent CNC partner matching, Indianet for connected supply chain operations, and SolidXCad for text-to-manufacture-ready CAD generation. We also deliver custom AI software and manufacturing research services.',
+          'Equvinoxis offers Enigma — an AI-powered sourcing platform with two verticals: manufacturing RFQ matching (CNC & precision partners) and Enigma Pharma for pharma CDMO sourcing (API, formulation, biologics). We also provide Indianet for connected supply chain operations, SolidXCad for text-to-manufacture-ready CAD, plus custom AI software and manufacturing research services.',
+      },
+      {
+        question: 'What is Enigma and how do the two platforms differ?',
+        answer:
+          'Enigma is our RFQ-first sourcing platform. Enigma Manufacturing (enigma.equvinoxis.com) connects buyers with CNC and precision manufacturers using drawings, STL files, and capacity matching. Enigma Pharma (enigmapharma.equvinoxis.com) is built for pharmaceutical sponsors and CDMO partners — with NDA-gated PDF workflows, GMP certification filters, and AI CDMO match scoring. Both share the same buyer-free / partner-paid model.',
+      },
+      {
+        question: 'How is Enigma different from a traditional marketplace?',
+        answer:
+          'Enigma is RFQ-first, not a parts catalog. Buyers and hybrid accounts publish RFQs for free; manufacturers or CDMOs browse the pool and bid based on their plan (Free, Standard, Pro, or Enterprise). AI matching ranks the best-fit partners by capabilities, capacity, and fit — replacing email RFQs and broker spreadsheets.',
+      },
+      {
+        question: 'How does Enigma Pharma work for pharma buyers and CDMOs?',
+        answer:
+          'Pharma buyers register free, upload an NDA/CDA PDF with each RFQ, and publish to the project pool. CDMO partners browse by service category (API, formulation, fill-finish, biologics) and GMP certifications. Free CDMOs get view-only access; paid plans unlock bidding (20, 40, or unlimited bids per year). Admin approves upgrades — no online payment required.',
       },
       {
         question: 'How does Indianet pricing work?',
@@ -21,11 +36,6 @@ const faqCategories = [
         question: 'What is SolidXCad and who is it for?',
         answer:
           'SolidXCad is a cloud CAD workbench that turns engineering prompts into parametric STEP models. Engineering teams can inspect assemblies in 3D — with catalog fasteners, URDF robots, and multi-body structure — then export STL, G-code, and URDF directly from the browser.',
-      },
-      {
-        question: 'How is Enigma AI different from a traditional marketplace?',
-        answer:
-          'Enigma AI is an RFQ-first platform: buyers and hybrid accounts publish RFQs for free, while manufacturers browse the pool and request bids based on their plan (Free, Standard, Pro, or Enterprise). AI matching ranks the best-fit partners — not generic listings.',
       },
     ],
   },
@@ -60,7 +70,7 @@ const faqCategories = [
       {
         question: 'What support do you provide?',
         answer:
-          'All plans include email support at info@equvinoxis.com. Pro and Enterprise manufacturer plans include priority support, with Enterprise offering concierge deals and dedicated buyer matching.',
+          'All plans include email support at info@equvinoxis.com. Pro and Enterprise partner plans on Enigma and Enigma Pharma include priority support, with Enterprise offering concierge deals and dedicated buyer matching.',
       },
       {
         question: 'Do you support small and mid-size manufacturers?',
@@ -68,9 +78,9 @@ const faqCategories = [
           'Absolutely. Our solutions scale from growing manufacturers to large enterprises. We offer flexible plans and can tailor product bundles based on your operational size and goals.',
       },
       {
-        question: 'How does Enigma AI pricing work?',
+        question: 'How does Enigma pricing work?',
         answer:
-          'Buyer accounts are always free with unlimited RFQ publishing. Manufacturer plans range from Free (view-only RFQ pool) to Standard (₹3,42,000/yr), Pro (₹5,22,000/yr), and Enterprise (₹15,75,000/yr) with increasing RFQ request limits and profile visibility. Upgrades are admin-approved; downgrades include a 24-hour grace period.',
+          'Buyer accounts are always free on both Enigma Manufacturing and Enigma Pharma — unlimited RFQ publishing. Partner plans range from Free (view-only pool) to Standard (₹3,42,000/yr), Pro (₹5,22,000/yr), and Enterprise (₹15,75,000/yr) with increasing bid limits and profile visibility. Manufacturing plans use RFQ requests; pharma CDMO plans use RFQ bids. Upgrades are admin-approved with no online payment.',
       },
     ],
   },
