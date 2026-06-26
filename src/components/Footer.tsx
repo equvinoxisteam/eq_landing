@@ -68,6 +68,16 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
+                    href={PRODUCT_URLS.enigmaPharma}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Enigma Pharma
+                  </a>
+                </li>
+                <li>
+                  <a
                     href={PRODUCT_URLS.indianet}
                     target="_blank"
                     rel="noopener noreferrer"

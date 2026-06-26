@@ -32,7 +32,7 @@ export default function Hero() {
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto animate-fade-in-up delay-200">
-            Enigma AI, Indianet, and SolidXCad — plus custom solutions built for your industry
+            Enigma AI, Enigma Pharma, Indianet, and SolidXCad — plus custom solutions built for your industry
           </p>
 
           <p className="text-lg md:text-xl text-gray-400 mb-12 animate-fade-in-up delay-300 max-w-3xl mx-auto">
@@ -50,7 +50,7 @@ export default function Hero() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto animate-fade-in-up delay-500">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto animate-fade-in-up delay-500">
             <a
               href={PRODUCT_URLS.enigma}
               target="_blank"
@@ -59,6 +59,15 @@ export default function Hero() {
             >
               <div className="text-2xl font-bold text-blue-400 mb-2">Enigma AI</div>
               <div className="text-gray-400">CNC Partner Matching</div>
+            </a>
+            <a
+              href={PRODUCT_URLS.enigmaPharma}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all duration-300"
+            >
+              <div className="text-2xl font-bold text-emerald-400 mb-2">Enigma Pharma</div>
+              <div className="text-gray-400">Pharma CDMO Sourcing</div>
             </a>
             <a
               href={PRODUCT_URLS.indianet}

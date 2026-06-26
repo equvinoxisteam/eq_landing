@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import { PRODUCT_URLS } from '../constants/site';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +54,15 @@ export default function Navigation() {
                   <div className="font-semibold">Enigma AI</div>
                   <div className="text-xs text-gray-500">CNC Precision Matching</div>
                 </Link>
+                <a
+                  href={PRODUCT_URLS.enigmaPharma}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                >
+                  <div className="font-semibold">Enigma Pharma</div>
+                  <div className="text-xs text-gray-500">Pharma CDMO Sourcing</div>
+                </a>
                 <Link
                   to="/products/indianet"
                   className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
@@ -122,6 +132,15 @@ export default function Navigation() {
                   >
                     Enigma AI
                   </Link>
+                  <a
+                    href={PRODUCT_URLS.enigmaPharma}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsOpen(false)}
+                    className="text-sm text-gray-300"
+                  >
+                    Enigma Pharma
+                  </a>
                   <Link
                     to="/products/indianet"
                     onClick={() => setIsOpen(false)}
