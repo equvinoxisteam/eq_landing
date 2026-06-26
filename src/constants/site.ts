@@ -6,3 +6,10 @@ export const PRODUCT_URLS = {
   indianet: 'https://indianet.equvinoxis.com/',
   solidxcad: 'https://solidxcad.equvinoxis.com/login?fresh=1',
 } as const;
+
+/** Short subtitle shown under product names in nav, hero, and cards */
+export const PRODUCT_TAGS = {
+  enigma: 'AI RFQ Sourcing · Mfg & Pharma',
+  indianet: 'B2B Marketplace · Like Alibaba',
+  solidxcad: 'Text-to-CAD Platform',
+} as const;

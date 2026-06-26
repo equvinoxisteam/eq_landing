@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { PRODUCT_URLS } from '../constants/site';
+import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
 const products = [
   {
-    name: 'Enigma AI',
-    tagline: 'Where Intelligence Meets Manufacturing',
+    name: 'Enigma',
+    tagline: PRODUCT_TAGS.enigma,
     description:
-      'RFQ marketplace with AI matching. Buyers publish free — manufacturers browse and bid on plans from Free to Enterprise.',
+      'RFQ marketplace with AI matching for manufacturing and pharma. Buyers publish free — partners browse and bid on plans from Free to Enterprise.',
     benefits: ['Free buyer RFQ publishing', 'Tiered manufacturer plans', 'AI-powered partner matching'],
     borderColor: 'border-blue-500/50',
     accent: 'text-blue-400',
@@ -15,9 +15,9 @@ const products = [
   },
   {
     name: 'Indianet',
-    tagline: 'Manufacturing. Connected. Intelligent.',
+    tagline: PRODUCT_TAGS.indianet,
     description:
-      'B2B supplier marketplace. Build your store, publish catalogues, and respond to buyer RFQs on plans from Free to Premium.',
+      'List products, build supplier stores, and respond to buyer RFQs — India\'s B2B industrial marketplace for manufacturers and buyers.',
     benefits: ['Free supplier onboarding', 'Annual & 6-month billing', 'Tiered RFQ & showcase limits'],
     borderColor: 'border-purple-500/50',
     accent: 'text-purple-400',

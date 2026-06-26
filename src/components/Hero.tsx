@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PRODUCT_URLS } from '../constants/site';
+import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
 export default function Hero() {
   return (
@@ -57,8 +57,8 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-blue-500/50 transition-all duration-300"
             >
-              <div className="text-2xl font-bold text-blue-400 mb-2">Enigma AI</div>
-              <div className="text-gray-400">CNC Partner Matching</div>
+              <div className="text-2xl font-bold text-blue-400 mb-1">Enigma</div>
+              <div className="text-sm text-gray-400">{PRODUCT_TAGS.enigma}</div>
             </a>
             <a
               href={PRODUCT_URLS.enigmaPharma}
@@ -75,8 +75,8 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-purple-500/50 transition-all duration-300"
             >
-              <div className="text-2xl font-bold text-purple-400 mb-2">Indianet</div>
-              <div className="text-gray-400">Connected Supply Chain</div>
+              <div className="text-2xl font-bold text-purple-400 mb-1">Indianet</div>
+              <div className="text-sm text-gray-400">{PRODUCT_TAGS.indianet}</div>
             </a>
             <a
               href={PRODUCT_URLS.solidxcad}
@@ -84,8 +84,8 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-amber-500/50 transition-all duration-300"
             >
-              <div className="text-2xl font-bold text-amber-400 mb-2">SolidXCad</div>
-              <div className="text-gray-400">Cloud CAD Workbench</div>
+              <div className="text-2xl font-bold text-amber-400 mb-1">SolidXCad</div>
+              <div className="text-sm text-gray-400">{PRODUCT_TAGS.solidxcad}</div>
             </a>
           </div>
         </div>

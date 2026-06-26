@@ -1,6 +1,6 @@
 import { Linkedin, Instagram, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { CONTACT_EMAIL, PRODUCT_URLS } from '../constants/site';
+import { CONTACT_EMAIL, PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
 export default function Footer() {
   return (
@@ -57,23 +57,23 @@ export default function Footer() {
               <h3 className="font-bold text-lg mb-4 text-white">Products</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a
-                    href={PRODUCT_URLS.enigma}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white transition-colors"
+                  <Link
+                    to="/products/enigma"
+                    className="text-gray-400 hover:text-white transition-colors block"
                   >
-                    Enigma AI
-                  </a>
+                    <span className="block">Enigma</span>
+                    <span className="text-xs text-gray-600">{PRODUCT_TAGS.enigma}</span>
+                  </Link>
                 </li>
                 <li>
                   <a
                     href={PRODUCT_URLS.enigmaPharma}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-gray-400 hover:text-white transition-colors block"
                   >
-                    Enigma Pharma
+                    <span className="block">Enigma Pharma</span>
+                    <span className="text-xs text-gray-600">Pharma CDMO Sourcing</span>
                   </a>
                 </li>
                 <li>
@@ -81,9 +81,10 @@ export default function Footer() {
                     href={PRODUCT_URLS.indianet}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-gray-400 hover:text-white transition-colors block"
                   >
-                    Indianet Platform
+                    <span className="block">Indianet</span>
+                    <span className="text-xs text-gray-600">{PRODUCT_TAGS.indianet}</span>
                   </a>
                 </li>
                 <li>

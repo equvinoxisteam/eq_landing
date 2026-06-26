@@ -1,20 +1,20 @@
-import { PRODUCT_URLS } from '../constants/site';
+import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
 const offerings = [
   {
-    title: 'Enigma AI',
-    subtitle: 'RFQ Marketplace & AI Matching',
+    title: 'Enigma',
+    subtitle: PRODUCT_TAGS.enigma,
     description:
-      'Buyers publish RFQs for free. Manufacturers browse the pool and request bids on tiered plans — Free, Standard, Pro, and Enterprise — with AI-powered matching.',
+      'Buyers publish RFQs for free on manufacturing and pharma verticals. Partners browse the pool and bid on tiered plans — Free, Standard, Pro, and Enterprise — with AI-powered matching.',
     features: ['Free buyer RFQ publishing', 'Manufacturer plans from ₹0–₹15.75L/yr', 'Admin-approved upgrades'],
     href: PRODUCT_URLS.enigma,
     external: true,
   },
   {
     title: 'Indianet',
-    subtitle: 'B2B Supplier Marketplace',
+    subtitle: PRODUCT_TAGS.indianet,
     description:
-      'Manufacturers build supplier stores, publish product catalogues, and respond to buyer RFQs. Plans from Free to Premium with annual or 6-month billing.',
+      'Like Alibaba for Indian industry — suppliers list catalogues, run storefronts, and respond to buyer RFQs. Plans from Free to Premium with annual or 6-month billing.',
     features: ['Supplier store & catalogue', 'Buyer RFQ responses', 'Verified badges & ads'],
     href: PRODUCT_URLS.indianet,
     external: true,

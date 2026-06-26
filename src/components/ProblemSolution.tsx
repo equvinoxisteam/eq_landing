@@ -1,20 +1,27 @@
-import { PRODUCT_URLS } from '../constants/site';
+import { Link } from 'react-router-dom';
+import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
 const products = [
   {
-    name: 'Enigma AI',
-    summary: 'Find the right CNC manufacturing partners in seconds — with zero commission and precise capability matching.',
-    href: PRODUCT_URLS.enigma,
+    name: 'Enigma',
+    tag: PRODUCT_TAGS.enigma,
+    summary: 'AI RFQ sourcing for CNC manufacturing and pharma CDMO partners — buyers publish free, partners bid on tiered plans.',
+    href: '/products/enigma',
+    external: false,
   },
   {
     name: 'Indianet',
-    summary: 'Connect raw materials, machinery, logistics, and compliance in one supply chain platform built for manufacturers.',
+    tag: PRODUCT_TAGS.indianet,
+    summary: 'List products, run supplier stores, and win buyer RFQs — India\'s B2B marketplace for industrial sourcing.',
     href: PRODUCT_URLS.indianet,
+    external: true,
   },
   {
     name: 'SolidXCad',
+    tag: PRODUCT_TAGS.solidxcad,
     summary: 'Cloud CAD workbench — from prompt to STEP with in-browser 3D inspection and export to STL, G-code, and URDF.',
     href: PRODUCT_URLS.solidxcad,
+    external: true,
   },
 ];
 
@@ -43,20 +50,37 @@ export default function ProblemSolution() {
               </p>
 
               <div className="space-y-5 mb-6">
-                {products.map((product) => (
-                  <a
-                    key={product.name}
-                    href={product.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block group border-l-2 border-green-700/60 pl-4 hover:border-green-400 transition-colors"
-                  >
-                    <strong className="text-white group-hover:text-blue-300 transition-colors">
-                      {product.name}
-                    </strong>
-                    <p className="text-gray-300 mt-1">{product.summary}</p>
-                  </a>
-                ))}
+                {products.map((product) => {
+                  const content = (
+                    <>
+                      <strong className="text-white group-hover:text-blue-300 transition-colors block">
+                        {product.name}
+                      </strong>
+                      <span className="text-xs text-gray-500 block mt-0.5">{product.tag}</span>
+                      <p className="text-gray-300 mt-1">{product.summary}</p>
+                    </>
+                  );
+
+                  return product.external ? (
+                    <a
+                      key={product.name}
+                      href={product.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group border-l-2 border-green-700/60 pl-4 hover:border-green-400 transition-colors"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <Link
+                      key={product.name}
+                      to={product.href}
+                      className="block group border-l-2 border-green-700/60 pl-4 hover:border-green-400 transition-colors"
+                    >
+                      {content}
+                    </Link>
+                  );
+                })}
               </div>
 
               <div className="border-t border-green-900/40 pt-5">

@@ -1,6 +1,6 @@
 import { Brain, Zap, Target, CheckCircle2, ArrowRight, Check, Users, Factory, FlaskConical, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PRODUCT_URLS } from '../constants/site';
+import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 import ProductScreenshot from '../components/ProductScreenshot';
 
 const manufacturerPlans = [
@@ -231,9 +231,12 @@ export default function ProductEnigma() {
       <section className="py-20 border-b border-gray-800">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-3 bg-blue-900/30 border border-blue-800/50 rounded-full px-6 py-3 mb-6">
-              <Brain className="w-6 h-6 text-blue-400" />
-              <span className="text-blue-400 font-semibold">Enigma</span>
+            <div className="inline-flex flex-col items-center gap-1 bg-blue-900/30 border border-blue-800/50 rounded-full px-6 py-3 mb-6">
+              <div className="inline-flex items-center gap-3">
+                <Brain className="w-6 h-6 text-blue-400" />
+                <span className="text-blue-400 font-semibold">Enigma</span>
+              </div>
+              <span className="text-xs text-blue-300/80">{PRODUCT_TAGS.enigma}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-4">
               AI-Powered <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Sourcing Platform</span>

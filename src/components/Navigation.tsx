@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import { PRODUCT_TAGS } from '../constants/site';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +43,7 @@ export default function Navigation() {
                 <ChevronDown className="w-4 h-4" />
               </button>
               <div
-                className={`absolute top-full left-0 mt-2 w-64 bg-gray-900 border border-gray-800 rounded-lg shadow-xl py-2 transition-all duration-200 ${
+                className={`absolute top-full left-0 mt-2 w-72 bg-gray-900 border border-gray-800 rounded-lg shadow-xl py-2 transition-all duration-200 ${
                   productsOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                 }`}
               >
@@ -51,21 +52,21 @@ export default function Navigation() {
                   className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
                 >
                   <div className="font-semibold">Enigma</div>
-                  <div className="text-xs text-gray-500">Sourcing Platform</div>
+                  <div className="text-xs text-gray-500">{PRODUCT_TAGS.enigma}</div>
                 </Link>
                 <Link
                   to="/products/indianet"
                   className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
                 >
                   <div className="font-semibold">Indianet</div>
-                  <div className="text-xs text-gray-500">Manufacturing Ecosystem</div>
+                  <div className="text-xs text-gray-500">{PRODUCT_TAGS.indianet}</div>
                 </Link>
                 <Link
                   to="/products/solidxcad"
                   className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
                 >
                   <div className="font-semibold">SolidXCad</div>
-                  <div className="text-xs text-gray-500">Text-to-CAD Platform</div>
+                  <div className="text-xs text-gray-500">{PRODUCT_TAGS.solidxcad}</div>
                 </Link>
               </div>
             </div>
@@ -121,21 +122,23 @@ export default function Navigation() {
                     className="text-sm text-gray-300"
                   >
                     <span className="block">Enigma</span>
-                    <span className="text-xs text-gray-500">Sourcing Platform</span>
+                    <span className="text-xs text-gray-500">{PRODUCT_TAGS.enigma}</span>
                   </Link>
                   <Link
                     to="/products/indianet"
                     onClick={() => setIsOpen(false)}
                     className="text-sm text-gray-300"
                   >
-                    Indianet
+                    <span className="block">Indianet</span>
+                    <span className="text-xs text-gray-500">{PRODUCT_TAGS.indianet}</span>
                   </Link>
                   <Link
                     to="/products/solidxcad"
                     onClick={() => setIsOpen(false)}
                     className="text-sm text-gray-300"
                   >
-                    SolidXCad
+                    <span className="block">SolidXCad</span>
+                    <span className="text-xs text-gray-500">{PRODUCT_TAGS.solidxcad}</span>
                   </Link>
                 </div>
               </div>
