@@ -1,5 +1,4 @@
 import {
-  Cloud,
   Layers,
   ArrowRight,
   FileCode,
@@ -19,10 +18,6 @@ export default function ProductSolidXCad() {
       <section className="py-20 border-b border-gray-800">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-3 bg-amber-900/30 border border-amber-800/50 rounded-full px-6 py-3 mb-6">
-              <Cloud className="w-6 h-6 text-amber-400" />
-              <span className="text-amber-400 font-semibold">Cloud CAD Workbench</span>
-            </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               From Prompt to <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">STEP</span> in One Engineering Workspace
             </h1>
