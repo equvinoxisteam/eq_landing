@@ -10,6 +10,6 @@ export const PRODUCT_URLS = {
 /** Short subtitle shown under product names in nav, hero, and cards */
 export const PRODUCT_TAGS = {
   enigma: 'AI RFQ Sourcing · Mfg & Pharma',
-  indianet: 'B2B Marketplace · Like Alibaba',
+  indianet: 'B2B Supplier Marketplace',
   solidxcad: 'Text-to-CAD Platform',
 } as const;

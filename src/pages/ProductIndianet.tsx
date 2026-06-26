@@ -141,7 +141,7 @@ export default function ProductIndianet() {
               <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Supplier Marketplace</span>
             </h1>
             <p className="text-xl text-gray-400 mb-8">
-              Like Alibaba for Indian manufacturing — list products, build your supplier store, and respond to buyer RFQs. From free discovery to premium visibility.
+              India's B2B supplier marketplace — list products, build your supplier store, and respond to buyer RFQs. From free discovery to premium visibility.
             </p>
             <a
               href={PRODUCT_URLS.indianet}

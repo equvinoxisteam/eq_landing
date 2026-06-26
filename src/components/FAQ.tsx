@@ -30,7 +30,7 @@ const faqCategories = [
       {
         question: 'How does Indianet pricing work?',
         answer:
-          'Indianet is India\'s B2B industrial marketplace — like Alibaba for manufacturers. Suppliers list products, build storefronts, and respond to buyer RFQs on plans from Free to Premium (Basic ₹1,65,000/yr through Premium ₹11,25,000/yr). All paid plans are tax exclusive with annual or 6-month billing. Higher tiers add public profiles, verified badges, more RFQ responses, showcases, and advertising.',
+          'Indianet is India\'s B2B industrial marketplace for manufacturers. Suppliers list products, build storefronts, and respond to buyer RFQs on plans from Free to Premium (Basic ₹1,65,000/yr through Premium ₹11,25,000/yr). All paid plans are tax exclusive with annual or 6-month billing. Higher tiers add public profiles, verified badges, more RFQ responses, showcases, and advertising.',
       },
       {
         question: 'What is SolidXCad and who is it for?',

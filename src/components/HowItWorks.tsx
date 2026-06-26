@@ -14,7 +14,7 @@ const offerings = [
     title: 'Indianet',
     subtitle: PRODUCT_TAGS.indianet,
     description:
-      'Like Alibaba for Indian industry — suppliers list catalogues, run storefronts, and respond to buyer RFQs. Plans from Free to Premium with annual or 6-month billing.',
+      'India\'s B2B supplier marketplace — list catalogues, run storefronts, and respond to buyer RFQs. Plans from Free to Premium with annual or 6-month billing.',
     features: ['Supplier store & catalogue', 'Buyer RFQ responses', 'Verified badges & ads'],
     href: PRODUCT_URLS.indianet,
     external: true,
