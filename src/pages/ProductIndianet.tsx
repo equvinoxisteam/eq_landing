@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Network, Package, Store, MessageSquare, ArrowRight, Check, ShoppingBag, Globe, Shield, Truck } from 'lucide-react';
+import { Network, Package, Store, MessageSquare, ArrowRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { INDIANET_EXPRESS_NAME, PRODUCT_URLS } from '../constants/site';
+import { PRODUCT_URLS } from '../constants/site';
 import ProductScreenshot from '../components/ProductScreenshot';
 
 type BillingPeriod = 'annual' | 'semi-annual';
@@ -130,103 +130,36 @@ export default function ProductIndianet() {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              {INDIANET_EXPRESS_NAME} —{' '}
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Shop Industrial Products</span>
+              India's B2B{' '}
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Supplier Marketplace</span>
             </h1>
             <p className="text-xl text-gray-400 mb-8">
-              India's industrial e-commerce marketplace — browse machinery and parts, order online with secure payment,
-              track deliveries worldwide, or list products and grow your supplier business.
+              India's B2B supplier marketplace — list products, build your supplier store, and respond to buyer RFQs. From free discovery to premium visibility.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={PRODUCT_URLS.indianet}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/30"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                Shop Products
-                <ArrowRight className="w-5 h-5" />
-              </a>
-              <a
-                href={PRODUCT_URLS.indianet}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 border-2 border-gray-600 hover:border-purple-500 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:bg-gray-900/50"
-              >
-                Start Selling
-                <ArrowRight className="w-5 h-5" />
-              </a>
-            </div>
+            <a
+              href={PRODUCT_URLS.indianet}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/30"
+            >
+              Launch Indianet
+              <ArrowRight className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </section>
 
       <ProductScreenshot
         src="/image.png"
-        alt="Indianet Express industrial e-commerce homepage with product categories, secure checkout, and verified sellers"
-        title={`${INDIANET_EXPRESS_NAME} — Industrial e-commerce marketplace`}
-        description="Browse CNC machines, packaging lines, spare parts, and heavy equipment from verified sellers. Order online, pay securely, and get reliable shipping across India and worldwide."
+        alt="Indianet B2B industrial marketplace homepage with product search, categories, and verified supplier sourcing"
+        title="Indianet — B2B industrial marketplace"
+        description="Source CNC machines, packaging lines, and heavy equipment from verified suppliers across India with RFQs, bulk orders, and worldwide delivery."
         accentClass="from-purple-400 to-pink-400"
       />
 
       <section className="py-20 border-b border-gray-800">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4">Buy on {INDIANET_EXPRESS_NAME}</h2>
-              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-                Discover industrial products from trusted manufacturers and distributors — built for buyers who need
-                reliable sourcing, transparent pricing, and fast delivery.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
-                <ShoppingBag className="w-12 h-12 text-purple-400 mb-4" />
-                <h3 className="text-xl font-bold mb-2">Browse & Buy</h3>
-                <p className="text-gray-400 text-sm">Explore categories, compare products, and place orders online in minutes</p>
-              </div>
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
-                <Shield className="w-12 h-12 text-pink-400 mb-4" />
-                <h3 className="text-xl font-bold mb-2">Secure Payment</h3>
-                <p className="text-gray-400 text-sm">Pay safely at checkout and sign in to track orders from purchase to delivery</p>
-              </div>
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
-                <Truck className="w-12 h-12 text-cyan-400 mb-4" />
-                <h3 className="text-xl font-bold mb-2">Worldwide Delivery</h3>
-                <p className="text-gray-400 text-sm">Fast, secure shipping across India and international destinations</p>
-              </div>
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
-                <Globe className="w-12 h-12 text-blue-400 mb-4" />
-                <h3 className="text-xl font-bold mb-2">Verified Sellers</h3>
-                <p className="text-gray-400 text-sm">Source from verified manufacturers and distributors with professional support</p>
-              </div>
-            </div>
-            <div className="text-center mt-10">
-              <a
-                href={PRODUCT_URLS.indianet}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                Start Shopping
-                <ArrowRight className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 border-b border-gray-800">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4">Sell on {INDIANET_EXPRESS_NAME}</h2>
-              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-                List products, build your supplier store, and respond to buyer RFQs — from free discovery to premium visibility.
-              </p>
-            </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
                 <Store className="w-12 h-12 text-purple-400 mb-4" />
@@ -256,7 +189,7 @@ export default function ProductIndianet() {
       <section className="py-20 border-b border-gray-800">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center">How {INDIANET_EXPRESS_NAME} Works for Sellers</h2>
+            <h2 className="text-4xl font-bold mb-12 text-center">How Indianet Works</h2>
             <div className="space-y-8">
               {[
                 {
@@ -420,7 +353,7 @@ export default function ProductIndianet() {
             </div>
 
             <p className="text-center text-sm text-gray-500 mt-10">
-              Plan upgrades are processed through {INDIANET_EXPRESS_NAME}. Contact our team for billing questions or enterprise arrangements.
+              Plan upgrades are processed through Indianet. Contact our team for billing questions or enterprise arrangements.
             </p>
           </div>
         </div>

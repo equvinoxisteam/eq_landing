@@ -11,12 +11,21 @@ const offerings = [
     external: true,
   },
   {
-    title: INDIANET_EXPRESS_NAME,
+    title: 'Indianet',
     subtitle: PRODUCT_TAGS.indianet,
     description:
-      'India\'s industrial e-commerce marketplace — browse and buy machinery, parts, and equipment with secure checkout, or list catalogues and respond to buyer RFQs on plans from Free to Premium.',
-    features: ['Shop products online', 'Supplier store & catalogue', 'Verified sellers & worldwide delivery'],
+      'India\'s B2B supplier marketplace — list catalogues, run storefronts, and respond to buyer RFQs. Plans from Free to Premium with annual or 6-month billing.',
+    features: ['Supplier store & catalogue', 'Buyer RFQ responses', 'Verified badges & ads'],
     href: PRODUCT_URLS.indianet,
+    external: true,
+  },
+  {
+    title: INDIANET_EXPRESS_NAME,
+    subtitle: PRODUCT_TAGS.indianetExpress,
+    description:
+      'India\'s industrial e-commerce store — browse machinery and parts, order online with secure payment, track deliveries, and shop from verified sellers worldwide.',
+    features: ['Browse & buy online', 'Secure checkout & tracking', 'Verified sellers & worldwide delivery'],
+    href: PRODUCT_URLS.indianetExpress,
     external: true,
   },
   {

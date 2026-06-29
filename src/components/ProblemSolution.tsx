@@ -10,10 +10,17 @@ const products = [
     external: false,
   },
   {
-    name: INDIANET_EXPRESS_NAME,
+    name: 'Indianet',
     tag: PRODUCT_TAGS.indianet,
-    summary: 'Browse machinery and parts, order online with secure payment, and track deliveries — or list products and run your supplier store.',
+    summary: 'List products, run supplier stores, and win buyer RFQs — India\'s B2B marketplace for industrial sourcing.',
     href: PRODUCT_URLS.indianet,
+    external: true,
+  },
+  {
+    name: INDIANET_EXPRESS_NAME,
+    tag: PRODUCT_TAGS.indianetExpress,
+    summary: 'Browse machinery and parts, order online with secure payment, and track deliveries from verified sellers worldwide.',
+    href: PRODUCT_URLS.indianetExpress,
     external: true,
   },
   {

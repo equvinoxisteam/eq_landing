@@ -77,14 +77,23 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
+                  <Link
+                    to="/products/indianet"
+                    className="text-gray-400 hover:text-white transition-colors block"
+                  >
+                    <span className="block">Indianet</span>
+                    <span className="text-xs text-gray-600">{PRODUCT_TAGS.indianet}</span>
+                  </Link>
+                </li>
+                <li>
                   <a
-                    href={PRODUCT_URLS.indianet}
+                    href={PRODUCT_URLS.indianetExpress}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-white transition-colors block"
                   >
                     <span className="block">{INDIANET_EXPRESS_NAME}</span>
-                    <span className="text-xs text-gray-600">{PRODUCT_TAGS.indianet}</span>
+                    <span className="text-xs text-gray-600">{PRODUCT_TAGS.indianetExpress}</span>
                   </a>
                 </li>
                 <li>

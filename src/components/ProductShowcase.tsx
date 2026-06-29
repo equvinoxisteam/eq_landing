@@ -12,18 +12,31 @@ const products = [
     accent: 'text-blue-400',
     href: PRODUCT_URLS.enigma,
     isExternal: true,
+    variant: 'launch' as const,
   },
   {
-    name: INDIANET_EXPRESS_NAME,
+    name: 'Indianet',
     tagline: PRODUCT_TAGS.indianet,
     description:
-      'Browse machinery, parts, and industrial equipment from verified sellers. Order online with secure payment, worldwide delivery, and track every purchase — or open your own supplier store.',
-    benefits: ['Browse all categories', 'Secure checkout & order tracking', 'Verified sellers & worldwide shipping'],
+      'List products, build supplier stores, and respond to buyer RFQs — India\'s B2B industrial marketplace for manufacturers and distributors.',
+    benefits: ['Free supplier onboarding', 'Annual & 6-month billing', 'Tiered RFQ & showcase limits'],
     borderColor: 'border-purple-500/50',
     accent: 'text-purple-400',
     href: PRODUCT_URLS.indianet,
     isExternal: true,
-    isIndianet: true,
+    variant: 'indianet' as const,
+  },
+  {
+    name: INDIANET_EXPRESS_NAME,
+    tagline: PRODUCT_TAGS.indianetExpress,
+    description:
+      'Browse machinery, parts, and industrial equipment from verified sellers. Order online with secure payment, track deliveries, and shop worldwide.',
+    benefits: ['Browse all categories', 'Secure checkout & order tracking', 'Verified sellers & worldwide shipping'],
+    borderColor: 'border-rose-500/50',
+    accent: 'text-rose-400',
+    href: PRODUCT_URLS.indianetExpress,
+    isExternal: true,
+    variant: 'indianetExpress' as const,
   },
   {
     name: 'SolidXCad',
@@ -35,6 +48,7 @@ const products = [
     accent: 'text-amber-400',
     href: PRODUCT_URLS.solidxcad,
     isExternal: true,
+    variant: 'launch' as const,
   },
   {
     name: 'Custom Industry Solutions',
@@ -46,6 +60,7 @@ const products = [
     accent: 'text-orange-400',
     href: '/contact',
     isExternal: false,
+    variant: 'contact' as const,
   },
 ];
 
@@ -67,14 +82,14 @@ export default function ProductShowcase() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product, index) => {
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.map((product) => {
               const buttonClass =
                 'w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-gray-500 text-white py-3 rounded-lg font-semibold text-center transition-all duration-300';
 
               return (
                 <div
-                  key={index}
+                  key={product.name}
                   className={`bg-gray-900/50 backdrop-blur-sm border ${product.borderColor} rounded-2xl p-8 flex flex-col justify-between hover:border-gray-600 transition-colors duration-300`}
                 >
                   <div>
@@ -85,14 +100,14 @@ export default function ProductShowcase() {
                     <p className="text-gray-300 mb-6 leading-relaxed">{product.description}</p>
 
                     <ul className="space-y-2 text-sm text-gray-400">
-                      {product.benefits.map((benefit, i) => (
-                        <li key={i}>{benefit}</li>
+                      {product.benefits.map((benefit) => (
+                        <li key={benefit}>{benefit}</li>
                       ))}
                     </ul>
                   </div>
 
                   <div className="mt-8">
-                    {'isIndianet' in product && product.isIndianet ? (
+                    {product.variant === 'indianet' ? (
                       <div className="flex flex-col gap-3">
                         <a
                           href={product.href}
@@ -100,13 +115,30 @@ export default function ProductShowcase() {
                           rel="noopener noreferrer"
                           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 rounded-lg font-semibold text-center transition-all duration-300"
                         >
-                          Shop Products
+                          Launch Platform
                         </a>
                         <Link
                           to="/products/indianet"
-                          className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-gray-500 text-white py-3 rounded-lg font-semibold text-center transition-all duration-300"
+                          className={buttonClass}
                         >
-                          Sell on Marketplace
+                          View Plans
+                        </Link>
+                      </div>
+                    ) : product.variant === 'indianetExpress' ? (
+                      <div className="flex flex-col gap-3">
+                        <a
+                          href={product.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-700 hover:to-orange-700 text-white py-3 rounded-lg font-semibold text-center transition-all duration-300"
+                        >
+                          Shop Products
+                        </a>
+                        <Link
+                          to="/products/indianet-express"
+                          className={buttonClass}
+                        >
+                          Learn More
                         </Link>
                       </div>
                     ) : product.isExternal ? (

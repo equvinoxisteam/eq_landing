@@ -58,8 +58,15 @@ export default function Navigation() {
                   to="/products/indianet"
                   className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
                 >
-                  <div className="font-semibold">{INDIANET_EXPRESS_NAME}</div>
+                  <div className="font-semibold">Indianet</div>
                   <div className="text-xs text-gray-500">{PRODUCT_TAGS.indianet}</div>
+                </Link>
+                <Link
+                  to="/products/indianet-express"
+                  className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                >
+                  <div className="font-semibold">{INDIANET_EXPRESS_NAME}</div>
+                  <div className="text-xs text-gray-500">{PRODUCT_TAGS.indianetExpress}</div>
                 </Link>
                 <Link
                   to="/products/solidxcad"
@@ -85,10 +92,10 @@ export default function Navigation() {
 
           <div className="hidden lg:flex items-center gap-4">
             <a
-              href={PRODUCT_URLS.indianet}
+              href={PRODUCT_URLS.indianetExpress}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:scale-105"
+              className="bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-700 hover:to-orange-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg shadow-rose-500/30 hover:shadow-xl hover:scale-105"
             >
               Shop Products
             </a>
@@ -137,8 +144,16 @@ export default function Navigation() {
                     onClick={() => setIsOpen(false)}
                     className="text-sm text-gray-300"
                   >
-                    <span className="block">{INDIANET_EXPRESS_NAME}</span>
+                    <span className="block">Indianet</span>
                     <span className="text-xs text-gray-500">{PRODUCT_TAGS.indianet}</span>
+                  </Link>
+                  <Link
+                    to="/products/indianet-express"
+                    onClick={() => setIsOpen(false)}
+                    className="text-sm text-gray-300"
+                  >
+                    <span className="block">{INDIANET_EXPRESS_NAME}</span>
+                    <span className="text-xs text-gray-500">{PRODUCT_TAGS.indianetExpress}</span>
                   </Link>
                   <Link
                     to="/products/solidxcad"
@@ -173,11 +188,11 @@ export default function Navigation() {
 
               <div className="pt-4 border-t border-gray-800 flex flex-col gap-3">
                 <a
-                  href={PRODUCT_URLS.indianet}
+                  href={PRODUCT_URLS.indianetExpress}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm text-center"
+                  className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm text-center"
                 >
                   Shop Products
                 </a>

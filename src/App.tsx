@@ -7,6 +7,7 @@ import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
 import ProductEnigma from './pages/ProductEnigma';
 import ProductIndianet from './pages/ProductIndianet';
+import ProductIndianetExpress from './pages/ProductIndianetExpress';
 import ProductSolidXCad from './pages/ProductSolidXCad';
 import Security from './components/Security';
 import FAQ from './components/FAQ';
@@ -25,6 +26,7 @@ function App() {
           <Route path="/research" element={<Navigate to="/" replace />} />
           <Route path="/products/enigma" element={<ProductEnigma />} />
           <Route path="/products/indianet" element={<ProductIndianet />} />
+          <Route path="/products/indianet-express" element={<ProductIndianetExpress />} />
           <Route path="/products/solidxcad" element={<ProductSolidXCad />} />
         </Routes>
         <Security />

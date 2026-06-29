@@ -1,12 +1,13 @@
 # eq_landing
 
-Equvinoxis landing page — Industry 4.0 manufacturing platform showcasing Enigma AI, Indianet Express, and SolidXCad.
+Equvinoxis landing page — Industry 4.0 manufacturing platform showcasing Enigma AI, Indianet, Indianet Express, and SolidXCad.
 
 ## Products
 
 | Product | URL |
 |---------|-----|
 | Enigma AI | https://enigma.equvinoxis.com/role-selection |
+| Indianet | https://indianet.equvinoxis.com/ |
 | Indianet Express | https://indianetexpress.equvinoxis.com/ |
 | SolidXCad | https://solidxcad.equvinoxis.com/login?fresh=1 |
 
