@@ -1,6 +1,6 @@
 import { Linkedin, Instagram, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { CONTACT_EMAIL, PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
+import { CONTACT_EMAIL, PRODUCT_URLS, PRODUCT_TAGS, INDIANET_EXPRESS_NAME } from '../constants/site';
 
 export default function Footer() {
   return (
@@ -83,7 +83,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-white transition-colors block"
                   >
-                    <span className="block">Indianet</span>
+                    <span className="block">{INDIANET_EXPRESS_NAME}</span>
                     <span className="text-xs text-gray-600">{PRODUCT_TAGS.indianet}</span>
                   </a>
                 </li>

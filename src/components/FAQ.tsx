@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { CONTACT_EMAIL } from '../constants/site';
+import { CONTACT_EMAIL, INDIANET_EXPRESS_NAME } from '../constants/site';
 
 const faqCategories = [
   {
@@ -10,7 +10,7 @@ const faqCategories = [
       {
         question: 'What products does Equvinoxis offer?',
         answer:
-          'Equvinoxis offers Enigma — an AI-powered sourcing platform with two verticals: manufacturing RFQ matching (CNC & precision partners) and Enigma Pharma for pharma CDMO sourcing (API, formulation, biologics). We also provide Indianet for connected supply chain operations, SolidXCad for text-to-manufacture-ready CAD, plus custom AI software and manufacturing research services.',
+          'Equvinoxis offers Enigma — an AI-powered sourcing platform with two verticals: manufacturing RFQ matching (CNC & precision partners) and Enigma Pharma for pharma CDMO sourcing (API, formulation, biologics). We also provide Indianet Express for industrial e-commerce — shop machinery and parts online or sell as a verified supplier — SolidXCad for text-to-manufacture-ready CAD, plus custom AI software and manufacturing research services.',
       },
       {
         question: 'What is Enigma and how do the two platforms differ?',
@@ -28,9 +28,9 @@ const faqCategories = [
           'Pharma buyers register free, upload an NDA/CDA PDF with each RFQ, and publish to the project pool. CDMO partners browse by service category (API, formulation, fill-finish, biologics) and GMP certifications. Free CDMOs get view-only access; paid plans unlock bidding (20, 40, or unlimited bids per year). Admin approves upgrades — no online payment required.',
       },
       {
-        question: 'How does Indianet pricing work?',
+        question: `How does ${INDIANET_EXPRESS_NAME} pricing work?`,
         answer:
-          'Indianet is India\'s B2B industrial marketplace for manufacturers. Suppliers list products, build storefronts, and respond to buyer RFQs on plans from Free to Premium (Basic ₹1,65,000/yr through Premium ₹11,25,000/yr). All paid plans are tax exclusive with annual or 6-month billing. Higher tiers add public profiles, verified badges, more RFQ responses, showcases, and advertising.',
+          `${INDIANET_EXPRESS_NAME} is India's industrial e-commerce marketplace. Buyers browse and order products online with secure payment and order tracking. Suppliers list products, build storefronts, and respond to buyer RFQs on plans from Free to Premium (Basic ₹1,65,000/yr through Premium ₹11,25,000/yr). All paid plans are tax exclusive with annual or 6-month billing. Higher tiers add public profiles, verified badges, more RFQ responses, showcases, and advertising.`,
       },
       {
         question: 'What is SolidXCad and who is it for?',

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { PRODUCT_TAGS } from '../constants/site';
+import { PRODUCT_TAGS, PRODUCT_URLS, INDIANET_EXPRESS_NAME } from '../constants/site';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +58,7 @@ export default function Navigation() {
                   to="/products/indianet"
                   className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
                 >
-                  <div className="font-semibold">Indianet</div>
+                  <div className="font-semibold">{INDIANET_EXPRESS_NAME}</div>
                   <div className="text-xs text-gray-500">{PRODUCT_TAGS.indianet}</div>
                 </Link>
                 <Link
@@ -84,6 +84,14 @@ export default function Navigation() {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
+            <a
+              href={PRODUCT_URLS.indianet}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:scale-105"
+            >
+              Shop Products
+            </a>
             <Link
               to="/contact"
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:scale-105"
@@ -129,7 +137,7 @@ export default function Navigation() {
                     onClick={() => setIsOpen(false)}
                     className="text-sm text-gray-300"
                   >
-                    <span className="block">Indianet</span>
+                    <span className="block">{INDIANET_EXPRESS_NAME}</span>
                     <span className="text-xs text-gray-500">{PRODUCT_TAGS.indianet}</span>
                   </Link>
                   <Link
@@ -164,6 +172,15 @@ export default function Navigation() {
               </Link>
 
               <div className="pt-4 border-t border-gray-800 flex flex-col gap-3">
+                <a
+                  href={PRODUCT_URLS.indianet}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsOpen(false)}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm text-center"
+                >
+                  Shop Products
+                </a>
                 <Link
                   to="/contact"
                   onClick={() => setIsOpen(false)}

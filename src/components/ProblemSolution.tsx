@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
+import { PRODUCT_URLS, PRODUCT_TAGS, INDIANET_EXPRESS_NAME } from '../constants/site';
 
 const products = [
   {
@@ -10,9 +10,9 @@ const products = [
     external: false,
   },
   {
-    name: 'Indianet',
+    name: INDIANET_EXPRESS_NAME,
     tag: PRODUCT_TAGS.indianet,
-    summary: 'List products, run supplier stores, and win buyer RFQs — India\'s B2B marketplace for industrial sourcing.',
+    summary: 'Browse machinery and parts, order online with secure payment, and track deliveries — or list products and run your supplier store.',
     href: PRODUCT_URLS.indianet,
     external: true,
   },

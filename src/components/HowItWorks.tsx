@@ -1,4 +1,4 @@
-import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
+import { PRODUCT_URLS, PRODUCT_TAGS, INDIANET_EXPRESS_NAME } from '../constants/site';
 
 const offerings = [
   {
@@ -11,11 +11,11 @@ const offerings = [
     external: true,
   },
   {
-    title: 'Indianet',
+    title: INDIANET_EXPRESS_NAME,
     subtitle: PRODUCT_TAGS.indianet,
     description:
-      'India\'s B2B supplier marketplace — list catalogues, run storefronts, and respond to buyer RFQs. Plans from Free to Premium with annual or 6-month billing.',
-    features: ['Supplier store & catalogue', 'Buyer RFQ responses', 'Verified badges & ads'],
+      'India\'s industrial e-commerce marketplace — browse and buy machinery, parts, and equipment with secure checkout, or list catalogues and respond to buyer RFQs on plans from Free to Premium.',
+    features: ['Shop products online', 'Supplier store & catalogue', 'Verified sellers & worldwide delivery'],
     href: PRODUCT_URLS.indianet,
     external: true,
   },

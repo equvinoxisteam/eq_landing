@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
+import { INDIANET_EXPRESS_NAME, PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
 const products = [
   {
@@ -14,15 +14,16 @@ const products = [
     isExternal: true,
   },
   {
-    name: 'Indianet',
+    name: INDIANET_EXPRESS_NAME,
     tagline: PRODUCT_TAGS.indianet,
     description:
-      'List products, build supplier stores, and respond to buyer RFQs — India\'s B2B industrial marketplace for manufacturers and buyers.',
-    benefits: ['Free supplier onboarding', 'Annual & 6-month billing', 'Tiered RFQ & showcase limits'],
+      'Browse machinery, parts, and industrial equipment from verified sellers. Order online with secure payment, worldwide delivery, and track every purchase — or open your own supplier store.',
+    benefits: ['Browse all categories', 'Secure checkout & order tracking', 'Verified sellers & worldwide shipping'],
     borderColor: 'border-purple-500/50',
     accent: 'text-purple-400',
     href: PRODUCT_URLS.indianet,
     isExternal: true,
+    isIndianet: true,
   },
   {
     name: 'SolidXCad',
@@ -91,7 +92,24 @@ export default function ProductShowcase() {
                   </div>
 
                   <div className="mt-8">
-                    {product.isExternal ? (
+                    {'isIndianet' in product && product.isIndianet ? (
+                      <div className="flex flex-col gap-3">
+                        <a
+                          href={product.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 rounded-lg font-semibold text-center transition-all duration-300"
+                        >
+                          Shop Products
+                        </a>
+                        <Link
+                          to="/products/indianet"
+                          className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-gray-500 text-white py-3 rounded-lg font-semibold text-center transition-all duration-300"
+                        >
+                          Sell on Marketplace
+                        </Link>
+                      </div>
+                    ) : product.isExternal ? (
                       <a
                         href={product.href}
                         target="_blank"

@@ -1,6 +1,6 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
+import { INDIANET_EXPRESS_NAME, PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
 export default function Hero() {
   return (
@@ -32,7 +32,7 @@ export default function Hero() {
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto animate-fade-in-up delay-200">
-            Enigma AI, Enigma Pharma, Indianet, and SolidXCad — plus custom solutions built for your industry
+            Enigma AI, Enigma Pharma, {INDIANET_EXPRESS_NAME}, and SolidXCad — plus custom solutions built for your industry
           </p>
 
           <p className="text-lg md:text-xl text-gray-400 mb-12 animate-fade-in-up delay-300 max-w-3xl mx-auto">
@@ -41,9 +41,19 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-fade-in-up delay-400">
+            <a
+              href={PRODUCT_URLS.indianet}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 shadow-lg shadow-purple-500/50 hover:shadow-xl hover:shadow-purple-500/70 hover:scale-105"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              Shop on {INDIANET_EXPRESS_NAME}
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </a>
             <Link
               to="/contact"
-              className="group bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/70 hover:scale-105"
+              className="group border-2 border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 hover:bg-gray-900/50"
             >
               Get Started
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -75,7 +85,7 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-lg p-6 hover:border-purple-500/50 transition-all duration-300"
             >
-              <div className="text-2xl font-bold text-purple-400 mb-1">Indianet</div>
+              <div className="text-2xl font-bold text-purple-400 mb-1">{INDIANET_EXPRESS_NAME}</div>
               <div className="text-sm text-gray-400">{PRODUCT_TAGS.indianet}</div>
             </a>
             <a
