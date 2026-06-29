@@ -30,12 +30,12 @@ export default function ProductIndianetExpress() {
                 <ArrowRight className="w-5 h-5" />
               </a>
               <a
-                href={PRODUCT_URLS.indianetExpress}
+                href={PRODUCT_URLS.indianetExpressVendorRegister}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 border-2 border-gray-600 hover:border-rose-500 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:bg-gray-900/50"
               >
-                Sell Now
+                Register as Vendor
                 <ArrowRight className="w-5 h-5" />
               </a>
             </div>
@@ -148,7 +148,7 @@ export default function ProductIndianetExpress() {
                   Join as a vendor, list your catalogue, and reach buyers looking for machinery, parts, and equipment.
                 </p>
                 <a
-                  href={PRODUCT_URLS.indianetExpress}
+                  href={PRODUCT_URLS.indianetExpressVendorRegister}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 font-semibold text-sm"

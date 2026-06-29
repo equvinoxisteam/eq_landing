@@ -134,12 +134,14 @@ export default function ProductShowcase() {
                         >
                           Shop Products
                         </a>
-                        <Link
-                          to="/products/indianet-express"
+                        <a
+                          href={PRODUCT_URLS.indianetExpressVendorRegister}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className={buttonClass}
                         >
-                          Learn More
-                        </Link>
+                          Register as Vendor
+                        </a>
                       </div>
                     ) : product.isExternal ? (
                       <a

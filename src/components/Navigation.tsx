@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { PRODUCT_TAGS, PRODUCT_URLS, INDIANET_EXPRESS_NAME } from '../constants/site';
+import { PRODUCT_TAGS, INDIANET_EXPRESS_NAME } from '../constants/site';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -91,14 +91,6 @@ export default function Navigation() {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
-            <a
-              href={PRODUCT_URLS.indianetExpress}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-700 hover:to-orange-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg shadow-rose-500/30 hover:shadow-xl hover:scale-105"
-            >
-              Shop Products
-            </a>
             <Link
               to="/contact"
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:scale-105"
@@ -187,15 +179,6 @@ export default function Navigation() {
               </Link>
 
               <div className="pt-4 border-t border-gray-800 flex flex-col gap-3">
-                <a
-                  href={PRODUCT_URLS.indianetExpress}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setIsOpen(false)}
-                  className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm text-center"
-                >
-                  Shop Products
-                </a>
                 <Link
                   to="/contact"
                   onClick={() => setIsOpen(false)}

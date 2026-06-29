@@ -5,6 +5,7 @@ export const PRODUCT_URLS = {
   enigmaPharma: 'https://enigmapharma.equvinoxis.com/role-selection',
   indianet: 'https://indianet.equvinoxis.com/',
   indianetExpress: 'https://indianetexpress.equvinoxis.com/',
+  indianetExpressVendorRegister: 'https://indianetexpress.equvinoxis.com/vendor/register',
   solidxcad: 'https://solidxcad.equvinoxis.com/login?fresh=1',
 } as const;
 

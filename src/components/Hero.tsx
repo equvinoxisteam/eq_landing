@@ -1,4 +1,4 @@
-import { ArrowRight, ShoppingBag } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { INDIANET_EXPRESS_NAME, PRODUCT_URLS, PRODUCT_TAGS } from '../constants/site';
 
@@ -48,16 +48,6 @@ export default function Hero() {
               Get Started
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a
-              href={PRODUCT_URLS.indianetExpress}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group border-2 border-rose-500/60 hover:border-rose-400 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 flex items-center gap-2 hover:bg-rose-950/30"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              Shop on {INDIANET_EXPRESS_NAME}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-6xl mx-auto animate-fade-in-up delay-500">
